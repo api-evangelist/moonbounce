@@ -1,0 +1,581 @@
+openapi: 3.0.0
+info:
+  title: Clavata Public API v1 Batch Processing Create Jobs API
+  description: Endpoints for creating and managing jobs via the Clavata Public API.
+  version: 1.0.0
+  contact:
+    name: Clavata.ai
+    url: https://clavata.ai
+    email: support@clavata.ai
+servers:
+- url: https://gateway.app.clavata.ai:8443
+security:
+- Bearer_Token: []
+tags:
+- name: Create Jobs
+paths:
+  /v1/jobs:
+    post:
+      summary: Create a new job
+      description: Creates a new job for content evaluation. Can be configured to wait for completion or return immediately with a job ID.
+      operationId: GatewayService_CreateJob
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1CreateJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GRPCErrorResponse'
+        '499':
+          description: Precheck Failures (Canceled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1PrecheckFailureResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateJobRequest'
+        required: true
+      tags:
+      - Create Jobs
+  /v1/jobs/stream:
+    post:
+      summary: Stream job results in real-time
+      description: Initiates a streaming job that processes content data and returns results as they become available. Useful for real-time content evaluation.
+      operationId: GatewayService_Evaluate
+      responses:
+        '200':
+          description: A successful response.(streaming responses)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    $ref: '#/components/schemas/clavatagatewayv1EvaluateResponse'
+                  error:
+                    $ref: '#/components/schemas/rpcStatus'
+                title: Stream result of clavatagatewayv1EvaluateResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GRPCErrorResponse'
+        '499':
+          description: Precheck Failures (Canceled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1PrecheckFailureResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clavatagatewayv1EvaluateRequest'
+        required: true
+      tags:
+      - Create Jobs
+components:
+  schemas:
+    v1JobResult:
+      type: object
+      properties:
+        jobUuid:
+          type: string
+          format: uuidv4
+          title: The ID of the job
+        report:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
+        created:
+          type: string
+          format: date-time
+          title: The time the result was created
+      description: A result of an evaluation job. Each piece of content that was evaluated will have one JobResult.
+      title: Job Result
+    v1GRPCErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
+          type: string
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+      title: A gRPC Status response
+    PolicyEvaluationReportTokenUsage:
+      type: object
+      properties:
+        inputTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that were sent to the service in the form of content.
+        billedTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that Clavata billed for this evaluation.
+        multiplier:
+          type: number
+          format: float
+          description: The policy complexity multiplier that was used to calculate the final billed tokens.
+      description: Usage related to this policy evaluation.
+    v1JobType:
+      type: string
+      enum:
+      - JOB_TYPE_UNSPECIFIED
+      - JOB_TYPE_STANDARD
+      - JOB_TYPE_BATCH
+      - JOB_TYPE_FREE
+      - JOB_TYPE_TEST
+      default: JOB_TYPE_UNSPECIFIED
+      description: JobType classifies how a job was created for billing and analytics purposes.
+    v1PrecheckMatchConfidence:
+      type: string
+      enum:
+      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      - PRECHECK_MATCH_CONFIDENCE_EXACT
+      - PRECHECK_MATCH_CONFIDENCE_HIGH
+      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
+      - PRECHECK_MATCH_CONFIDENCE_LOW
+      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
+    PolicyEvaluationReportReviewResult:
+      type: object
+      properties:
+        outcome:
+          $ref: '#/components/schemas/v1Outcome'
+        score:
+          type: number
+          format: double
+      description: Report on the result of a single assertion in a policy.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    v1PrecheckFailureType:
+      type: string
+      enum:
+      - PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      - PRECHECK_FAILURE_TYPE_NCMEC
+      - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT
+      - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
+      default: PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      description: " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
+    v1PrecheckFailureResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
+          type: string
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1PrecheckFailure'
+          description: An array of objects detailing why the content failed the prechecks.
+    v1CreateJobRequestOptions:
+      type: object
+      properties:
+        options:
+          type: object
+          additionalProperties:
+            type: string
+          description: Map of option keys to values.
+      description: Options for evaluation behavior.
+    clavatagatewayv1EvaluateRequest:
+      type: object
+      properties:
+        contentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ContentData'
+          description: The content data to be evaluated. Only one content type should be set per entry.
+        policyId:
+          type: string
+          title: policy_keys is the list of policy names to be evaluated. If empty, all policies will be evaluated
+        threshold:
+          type: number
+          format: double
+          description: The threshold to use for truthyness. If not set a default value will be used.
+        expedited:
+          type: boolean
+          description: If set, the job will be evaluated in expedited mode, prioritizing speed over cost.
+        options:
+          $ref: '#/components/schemas/v1EvaluateRequestOptions'
+      title: EvaluateRequest does not contain a customer ID field because the customer will be determined by looking at the credentials
+      required:
+      - contentData
+      - policyId
+    v1Outcome:
+      type: string
+      enum:
+      - OUTCOME_UNSPECIFIED
+      - OUTCOME_FALSE
+      - OUTCOME_TRUE
+      - OUTCOME_FAILED
+      default: OUTCOME_UNSPECIFIED
+      description: Evaluation outcome. TRUE, FALSE or FAILED.
+    PolicyEvaluationReportSectionEvaluationReport:
+      type: object
+      properties:
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in each section is evaluated
+          title: Per-assertion report
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Report on the evaluation of a SECTION or LABEL in a policy.
+    v1Job:
+      type: object
+      properties:
+        jobUuid:
+          type: string
+          format: uuidv4
+          title: The ID of the job
+          readOnly: true
+        customerId:
+          type: string
+          format: uuidv4
+          title: ID of the customer that created the job
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/v1JobStatus'
+        contentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ContentData'
+          description: Content associated with this job. In responses, includes the content hash and any metadata provided with the original request.
+          title: Content Data
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1JobResult'
+          title: The results of the policy evaluations
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          title: The time the job was created
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          title: The time the job was updated
+          readOnly: true
+        completed:
+          type: string
+          format: date-time
+          title: The time the job was completed
+          readOnly: true
+        policyId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy
+        policyVersionId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy version
+          readOnly: true
+        threshold:
+          type: number
+          format: double
+          title: The threshold that was set for this job
+        labelId:
+          type: string
+          format: uuidv4
+          description: Label ID to evaluate this job for published-label evaluation flows.
+          title: The ID of a label
+        labelVersionId:
+          type: string
+          format: uuidv4
+          description: Label Version ID to evaluate this job for published-label evaluation flows.
+          title: The ID of a label version
+          readOnly: true
+        jobType:
+          $ref: '#/components/schemas/v1JobType'
+      description: A unique evaluation job that has compared a policy to one or more pieces of content
+      title: Job
+    v1JobStatus:
+      type: string
+      enum:
+      - JOB_STATUS_UNSPECIFIED
+      - JOB_STATUS_PENDING
+      - JOB_STATUS_RUNNING
+      - JOB_STATUS_COMPLETED
+      - JOB_STATUS_FAILED
+      - JOB_STATUS_CANCELED
+      default: JOB_STATUS_UNSPECIFIED
+      title: The status of a job at the time of the response
+    clavatagatewayv1EvaluateResponse:
+      type: object
+      properties:
+        jobUuid:
+          type: string
+          title: Each call to Evaluate will have a unique job ID
+        contentHash:
+          type: string
+          title: The hash of the content that was evaluated
+        policyEvaluationReport:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
+    v1CreateJobRequest:
+      type: object
+      properties:
+        contentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ContentData'
+          description: The content data to be evaluated. Only one content type should be set per entry.
+        policyId:
+          type: string
+          title: The policy keys to be evaluated
+        threshold:
+          type: number
+          format: double
+          description: The threshold to use for truthyness. If not set a default value will be used.
+        expedited:
+          type: boolean
+          description: If set, the job will be evaluated in expedited mode, prioritizing speed over cost.
+        webhook:
+          $ref: '#/components/schemas/CreateJobRequestWebhook'
+        options:
+          $ref: '#/components/schemas/v1CreateJobRequestOptions'
+      required:
+      - contentData
+      - policyId
+    PolicyEvaluationReportExceptionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in the exception is evaluated
+          title: Per-assertion report
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Outcome of an EXCEPT WHEN or UNLESS block, if present.
+      title: EXCEPT WHEN or UNLESS report
+    CreateJobRequestWebhook:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL to call when the job is complete. Must be HTTPS.
+          title: Webhook URL
+        extraHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: Any additional headers to send with the webhook request. Optional. If included, all headers will be prepended with X-Webhook- to avoid collisions.
+          title: Extra Headers
+      description: A POST request to make when the job is complete.
+      title: Webhook Details (Optional)
+      required:
+      - url
+    v1PolicyEvaluationReport:
+      type: object
+      properties:
+        policyId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy
+        policyKey:
+          type: string
+          description: This is the title of the policy as it appears in the policy editor. Do not use this to identify a policy. Use the policy_id instead.
+          title: The human-readable name of the policy.
+        policyVersionId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy version
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        sectionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportSectionEvaluationReport'
+          description: Reports on the evaluation of each SECTION or LABEL block in the policy.
+          title: SECTION or LABEL reports
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        contentHash:
+          type: string
+          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'fnv1a128::hash-value')
+          title: Hash of the input content
+        contentMetadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: If metadata was attached to the content when the job was created, it will be attached to the evaluation report here.
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+        threshold:
+          type: number
+          format: double
+          title: The threshold that was used to evaluate the policy
+        labelMatches:
+          type: object
+          additionalProperties:
+            type: number
+            format: float
+          description: Labels that matched the content. The keys of the map are the label names, and the values are the scores for each label. This field provides a simple way to identify which labels matched the content without the need to dig into each section report.
+          title: Label matches
+        tokenUsage:
+          $ref: '#/components/schemas/PolicyEvaluationReportTokenUsage'
+        labelId:
+          type: string
+          format: uuidv4
+          description: The ID of the published label evaluated for label-based evaluation flows.
+          title: The ID of a label
+        labelVersionId:
+          type: string
+          format: uuidv4
+          description: The ID of the published label version evaluated for label-based evaluation flows.
+          title: The ID of a label version
+      description: A report on the result of evaluating a policy against a piece of content/input.
+      title: Policy Evaluation Report
+    v1CreateJobResponse:
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/v1Job'
+    v1ContentData:
+      type: object
+      properties:
+        contentHash:
+          type: string
+          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'md5::hash')
+          title: Clavata calculated hash of the content.
+          readOnly: true
+        text:
+          type: string
+          description: A text string to process.
+          title: Input text
+          writeOnly: true
+        image:
+          type: string
+          format: base64
+          description: A binary image file to process.
+          title: Input image
+          writeOnly: true
+        imageUrl:
+          type: string
+          description: A publicly-accessible URL that points to an image.
+          title: Input image URL
+          writeOnly: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          title: Optional metadata attached to content when sent to the server
+      description: A single piece of content to be processed by the Clavata.ai API.
+      title: Content Data
+    v1PrecheckFailure:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1PrecheckFailureType'
+        message:
+          type: string
+          title: An error message associated with the failure
+        details:
+          description: 'Details provides Additional about the failure. The shape will be different for each failure
+
+            type.'
+        matchConfidence:
+          $ref: '#/components/schemas/v1PrecheckMatchConfidence'
+    v1EvaluateRequestOptions:
+      type: object
+      properties:
+        options:
+          type: object
+          additionalProperties:
+            type: string
+          description: Map of option keys to values.
+      description: Options for evaluation behavior.
+    PolicyEvaluationReportAssertionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+          description: The text of the assertion.
+        score:
+          type: number
+          format: double
+          title: The truthiness of the assertion
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+  securitySchemes:
+    Bearer_Token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

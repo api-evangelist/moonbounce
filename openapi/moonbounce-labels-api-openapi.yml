@@ -1,0 +1,332 @@
+openapi: 3.0.0
+info:
+  title: Clavata Public API v1 Batch Processing Labels API
+  description: Endpoints for creating and managing jobs via the Clavata Public API.
+  version: 1.0.0
+  contact:
+    name: Clavata.ai
+    url: https://clavata.ai
+    email: support@clavata.ai
+servers:
+- url: https://gateway.app.clavata.ai:8443
+security:
+- Bearer_Token: []
+tags:
+- name: Labels
+paths:
+  /v1/labels/evaluate:
+    post:
+      summary: Evaluate labels
+      description: Evaluate content against one or more published label versions. Returns one result per version, in request order. A label-first account is required to use this endpoint.
+      operationId: LabelsService_EvaluateLabels
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EvaluateLabelsResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1EvaluateLabelsRequest'
+        required: true
+      tags:
+      - Labels
+components:
+  schemas:
+    v1PolicyEvaluationReport:
+      type: object
+      properties:
+        policyId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy
+        policyKey:
+          type: string
+          description: This is the title of the policy as it appears in the policy editor. Do not use this to identify a policy. Use the policy_id instead.
+          title: The human-readable name of the policy.
+        policyVersionId:
+          type: string
+          format: uuidv4
+          title: The ID of a policy version
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        sectionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportSectionEvaluationReport'
+          description: Reports on the evaluation of each SECTION or LABEL block in the policy.
+          title: SECTION or LABEL reports
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        contentHash:
+          type: string
+          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'fnv1a128::hash-value')
+          title: Hash of the input content
+        contentMetadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: If metadata was attached to the content when the job was created, it will be attached to the evaluation report here.
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+        threshold:
+          type: number
+          format: double
+          title: The threshold that was used to evaluate the policy
+        labelMatches:
+          type: object
+          additionalProperties:
+            type: number
+            format: float
+          description: Labels that matched the content. The keys of the map are the label names, and the values are the scores for each label. This field provides a simple way to identify which labels matched the content without the need to dig into each section report.
+          title: Label matches
+        tokenUsage:
+          $ref: '#/components/schemas/PolicyEvaluationReportTokenUsage'
+        labelId:
+          type: string
+          format: uuidv4
+          description: The ID of the published label evaluated for label-based evaluation flows.
+          title: The ID of a label
+        labelVersionId:
+          type: string
+          format: uuidv4
+          description: The ID of the published label version evaluated for label-based evaluation flows.
+          title: The ID of a label version
+      description: A report on the result of evaluating a policy against a piece of content/input.
+      title: Policy Evaluation Report
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    v1LabelEvalOptions:
+      type: object
+      properties:
+        bypassCache:
+          type: boolean
+          title: Whether to bypass the query cache during evaluation
+        expedited:
+          type: boolean
+          title: Whether to use expedited evaluation (prioritizing speed over cost)
+        bundleSize:
+          type: integer
+          format: int64
+          title: The bundle size to use for query batching in Hermes
+        threshold:
+          type: number
+          format: double
+          title: The threshold to use for determining truthiness
+        stack:
+          type: string
+          title: The stack name to use for evaluation (overrides default stack in Hermes)
+      description: 'LabelEvalOptions are options that can be set per-label to control evaluation behavior.
+
+        Field numbers/types intentionally mirror PolicyEvalOptions for parity.'
+    PolicyEvaluationReportExceptionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in the exception is evaluated
+          title: Per-assertion report
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Outcome of an EXCEPT WHEN or UNLESS block, if present.
+      title: EXCEPT WHEN or UNLESS report
+    PolicyEvaluationReportTokenUsage:
+      type: object
+      properties:
+        inputTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that were sent to the service in the form of content.
+        billedTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that Clavata billed for this evaluation.
+        multiplier:
+          type: number
+          format: float
+          description: The policy complexity multiplier that was used to calculate the final billed tokens.
+      description: Usage related to this policy evaluation.
+    v1ContentData:
+      type: object
+      properties:
+        contentHash:
+          type: string
+          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'md5::hash')
+          title: Clavata calculated hash of the content.
+          readOnly: true
+        text:
+          type: string
+          description: A text string to process.
+          title: Input text
+          writeOnly: true
+        image:
+          type: string
+          format: base64
+          description: A binary image file to process.
+          title: Input image
+          writeOnly: true
+        imageUrl:
+          type: string
+          description: A publicly-accessible URL that points to an image.
+          title: Input image URL
+          writeOnly: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          title: Optional metadata attached to content when sent to the server
+      description: A single piece of content to be processed by the Clavata.ai API.
+      title: Content Data
+    v1EvaluateLabelsRequest:
+      type: object
+      properties:
+        contentData:
+          $ref: '#/components/schemas/v1ContentData'
+        threshold:
+          type: number
+          format: double
+          description: The threshold to use for truthiness. If not set a default value will be used.
+        labelVersionIds:
+          type: array
+          items:
+            type: string
+          description: IDs of the published label versions to evaluate against. Maximum 10 per request.
+          title: Label version IDs
+        labelEvalOptions:
+          $ref: '#/components/schemas/v1LabelEvalOptions'
+        globalContext:
+          type: string
+          description: Optional global context override for this evaluation call.
+      required:
+      - contentData
+    v1EvaluateLabelsResponseLabelResult:
+      type: object
+      properties:
+        labelId:
+          type: string
+          description: The label this result corresponds to.
+        labelVersionId:
+          type: string
+          description: The label version that was evaluated.
+        jobUuid:
+          type: string
+          description: The job ID for this label version's evaluation.
+        evaluation:
+          $ref: '#/components/schemas/LabelResultEvaluation'
+        error:
+          type: string
+          description: Populated when this individual evaluation failed (RPC may still succeed).
+      description: 'Per-label result, one per requested `label_version_ids` entry (same order).
+
+        Each label version gets its own job for clean recordkeeping.'
+    LabelResultEvaluation:
+      type: object
+      properties:
+        score:
+          type: number
+          format: double
+        outcome:
+          $ref: '#/components/schemas/v1Outcome'
+        threshold:
+          type: number
+          format: double
+          description: 'Effective threshold used for this evaluation. When the request sets threshold to 0.0 or leaves it unset,
+
+            the server substitutes `evaluation.default_threshold` (currently 0.5) per `chooseThreshold`.'
+        report:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
+    v1EvaluateLabelsResponse:
+      type: object
+      properties:
+        contentHash:
+          type: string
+          description: The hash of the content that was evaluated.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1EvaluateLabelsResponseLabelResult'
+          description: Ordered results, one per requested `label_version_ids` entry.
+    v1Outcome:
+      type: string
+      enum:
+      - OUTCOME_UNSPECIFIED
+      - OUTCOME_FALSE
+      - OUTCOME_TRUE
+      - OUTCOME_FAILED
+      default: OUTCOME_UNSPECIFIED
+      description: Evaluation outcome. TRUE, FALSE or FAILED.
+    PolicyEvaluationReportAssertionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+          description: The text of the assertion.
+        score:
+          type: number
+          format: double
+          title: The truthiness of the assertion
+    PolicyEvaluationReportReviewResult:
+      type: object
+      properties:
+        outcome:
+          $ref: '#/components/schemas/v1Outcome'
+        score:
+          type: number
+          format: double
+      description: Report on the result of a single assertion in a policy.
+    PolicyEvaluationReportSectionEvaluationReport:
+      type: object
+      properties:
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in each section is evaluated
+          title: Per-assertion report
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Report on the evaluation of a SECTION or LABEL in a policy.
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+  securitySchemes:
+    Bearer_Token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

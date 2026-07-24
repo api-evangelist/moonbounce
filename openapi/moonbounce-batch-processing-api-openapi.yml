@@ -1,0 +1,376 @@
+openapi: 3.0.0
+info:
+  title: Clavata Public API v1 Batch Processing API
+  description: Endpoints for creating and managing jobs via the Clavata Public API.
+  version: 1.0.0
+  contact:
+    name: Clavata.ai
+    url: https://clavata.ai
+    email: support@clavata.ai
+servers:
+- url: https://gateway.app.clavata.ai:8443
+security:
+- Bearer_Token: []
+tags:
+- name: Batch Processing
+paths:
+  /v1/batch-jobs:
+    get:
+      summary: Get batch jobs
+      description: Retrieves batch jobs, optionally filtered by batch job IDs or states. If no filters are provided, all batch jobs will be returned.
+      operationId: GatewayService_GetBatchJobs
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetBatchJobsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GRPCErrorResponse'
+        '499':
+          description: Precheck Failures (Canceled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1PrecheckFailureResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      parameters:
+      - name: batchJobIds
+        description: IDs of the batch jobs to get. If not provided, all batch jobs will be returned.
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: states
+        description: The state of the batch jobs to get. If not provided, all batch jobs will be returned.
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BATCH_JOB_STATE_UNSPECIFIED
+            - BATCH_JOB_STATE_ERROR
+            - BATCH_JOB_STATE_INITIALIZED
+            - BATCH_JOB_STATE_QUEUED
+            - BATCH_JOB_STATE_PREPROCESSING
+            - BATCH_JOB_STATE_PREPROCESSED
+            - BATCH_JOB_STATE_SUBMITTED
+            - BATCH_JOB_STATE_POSTPROCESSING
+            - BATCH_JOB_STATE_POSTPROCESSED
+            - BATCH_JOB_STATE_COMPLETED
+            - BATCH_JOB_STATE_CANCELLED
+      tags:
+      - Batch Processing
+    post:
+      summary: Create a new batch job
+      description: Creates a new batch job that can process multiple content items in bulk. Returns a presigned URL for uploading the input file. The job will automatically start processing once the input file is uploaded.
+      operationId: GatewayService_CreateBatchJob
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1CreateBatchJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GRPCErrorResponse'
+        '499':
+          description: Precheck Failures (Canceled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1PrecheckFailureResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateBatchJobRequest'
+        required: true
+      tags:
+      - Batch Processing
+  /v1/batch-jobs/{batchJobId}/cancel:
+    post:
+      summary: Cancel a batch job
+      description: Cancels a batch job. This will stop the batch job from being processed further.
+      operationId: GatewayService_CancelBatchJob
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1CancelBatchJobResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GRPCErrorResponse'
+        '499':
+          description: Precheck Failures (Canceled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1PrecheckFailureResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+      parameters:
+      - name: batchJobId
+        description: The ID of the batch job to cancel
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayServiceCancelBatchJobBody'
+        required: true
+      tags:
+      - Batch Processing
+components:
+  schemas:
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    v1BatchJobError:
+      type: object
+      properties:
+        errorCode:
+          $ref: '#/components/schemas/v1BatchJobErrorCode'
+        errorMessage:
+          type: string
+    v1CancelBatchJobResponse:
+      type: object
+      properties:
+        batchJobId:
+          type: string
+          title: The ID of the batch job that was canceled
+        state:
+          $ref: '#/components/schemas/v1BatchJobState'
+        error:
+          $ref: '#/components/schemas/v1BatchJobError'
+    v1BatchJob:
+      type: object
+      properties:
+        batchJobId:
+          type: string
+          title: The ID of the batch job
+        name:
+          type: string
+          title: The name of the batch job
+        state:
+          $ref: '#/components/schemas/v1BatchJobState'
+        createdAt:
+          type: string
+          format: date-time
+          title: The time the batch job was created
+        updatedAt:
+          type: string
+          format: date-time
+          title: The time the batch job was updated
+        policyId:
+          type: string
+          title: The policy ID
+        policyVersionId:
+          type: string
+          description: The policy version ID used to evaluate the batch job. This is the version of the policy that was active at the time the batch job was started.
+        outputFileUrl:
+          type: string
+          description: The output file URL. This is only populated when the batch job is completed.
+      title: The batch jobs
+    v1PrecheckFailureType:
+      type: string
+      enum:
+      - PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      - PRECHECK_FAILURE_TYPE_NCMEC
+      - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT
+      - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
+      default: PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      description: " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
+    v1BatchJobErrorCode:
+      type: string
+      enum:
+      - BATCH_JOB_ERROR_UNSPECIFIED
+      - BATCH_JOB_ERROR_INVALID_INPUT_FILE
+      - BATCH_JOB_ERROR_INVALID_POLICY
+      - BATCH_JOB_ERROR_INVALID_POLICY_VERSION
+      - BATCH_JOB_ERROR_INVALID_PRIORITY
+      default: BATCH_JOB_ERROR_UNSPECIFIED
+    v1GRPCErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
+          type: string
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+      title: A gRPC Status response
+    v1GetBatchJobsResponse:
+      type: object
+      properties:
+        batchJobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1BatchJob'
+    v1PrecheckFailure:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1PrecheckFailureType'
+        message:
+          type: string
+          title: An error message associated with the failure
+        details:
+          description: 'Details provides Additional about the failure. The shape will be different for each failure
+
+            type.'
+        matchConfidence:
+          $ref: '#/components/schemas/v1PrecheckMatchConfidence'
+    v1CreateBatchJobResponse:
+      type: object
+      properties:
+        batchJobId:
+          type: string
+          title: The ID of the batch job that was created
+        name:
+          type: string
+          title: The name of the batch job
+        error:
+          $ref: '#/components/schemas/v1BatchJobError'
+        inputFileUploadUrl:
+          type: string
+          title: presigned URL at which the input file should be uploaded
+    v1CreateBatchJobRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: The name for the batch job
+        policyId:
+          type: string
+          title: The policy to be used for the batch job
+        webhookUrl:
+          type: string
+          description: The webhook URL to call when the batch job is complete. Optional.
+    v1PrecheckFailureResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
+          type: string
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1PrecheckFailure'
+          description: An array of objects detailing why the content failed the prechecks.
+    v1BatchJobState:
+      type: string
+      enum:
+      - BATCH_JOB_STATE_UNSPECIFIED
+      - BATCH_JOB_STATE_ERROR
+      - BATCH_JOB_STATE_INITIALIZED
+      - BATCH_JOB_STATE_QUEUED
+      - BATCH_JOB_STATE_PREPROCESSING
+      - BATCH_JOB_STATE_PREPROCESSED
+      - BATCH_JOB_STATE_SUBMITTED
+      - BATCH_JOB_STATE_POSTPROCESSING
+      - BATCH_JOB_STATE_POSTPROCESSED
+      - BATCH_JOB_STATE_COMPLETED
+      - BATCH_JOB_STATE_CANCELLED
+      default: BATCH_JOB_STATE_UNSPECIFIED
+    v1PrecheckMatchConfidence:
+      type: string
+      enum:
+      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      - PRECHECK_MATCH_CONFIDENCE_EXACT
+      - PRECHECK_MATCH_CONFIDENCE_HIGH
+      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
+      - PRECHECK_MATCH_CONFIDENCE_LOW
+      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
+    GatewayServiceCancelBatchJobBody:
+      type: object
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+  securitySchemes:
+    Bearer_Token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
