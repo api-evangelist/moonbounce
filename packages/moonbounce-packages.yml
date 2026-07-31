@@ -1,0 +1,27 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/api_documents_and_sdks.md
+packages:
+  - language: python
+    registry: pypi
+    name: clavata-sdk
+    version: 1.1.0
+    url: https://pypi.org/project/clavata-sdk/
+    install: pip install clavata-sdk
+    docs: https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/python_sdk
+    official: true
+  - language: javascript
+    registry: npm
+    name: "@clavata/sdk"
+    version: 0.5.0
+    url: https://www.npmjs.com/package/@clavata/sdk
+    install: npm install @clavata/sdk
+    docs: https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/javascript_typescript_sdk
+    official: true
+  - language: go
+    registry: pkg.go.dev
+    name: github.com/clavataai/gosdk
+    url: https://pkg.go.dev/github.com/clavataai/gosdk
+    install: go get github.com/clavataai/gosdk
+    docs: https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/go_sdk
+    official: true

@@ -1,0 +1,22 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.clavata.ai/changelog
+scheme: dated
+# Recent window only; the live changelog at docs.clavata.ai/changelog is the source of truth.
+entries:
+  - date: '2026-07-08'
+    url: https://docs.clavata.ai/changelog/2026-07-08
+    highlights: Image support in LUNA, cost transparency on Usage, and faster dataset review.
+    breaking: false
+  - date: '2026-06-10'
+    url: https://docs.clavata.ai/changelog/2026-06-10
+    highlights: API key expiration alerts and label experience improvements.
+    breaking: false
+  - date: '2026-06-02'
+    url: https://docs.clavata.ai/changelog/2026-06-02
+    highlights: Free plans, self-serve signup, and a brand-new label-first experience.
+    breaking: false
+  - date: '2026-04-23'
+    url: https://docs.clavata.ai/changelog/2026-04-21
+    highlights: LUNA label assistant, account switching, label insights, and more.
+    breaking: false

@@ -1,0 +1,17 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.clavata.ai
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /v1
+  docs: https://docs.clavata.ai/api-reference
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+  notes: Defined latency/throughput SLAs are offered only on the custom Enterprise plan; no publicly published uptime target.
+status_page: null
+deprecated_operations: []

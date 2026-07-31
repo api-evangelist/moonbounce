@@ -1,0 +1,1708 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Clavata Public API v1",
+    "description": "Endpoints for creating and managing jobs via the Clavata Public API.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Clavata.ai",
+      "url": "https://clavata.ai",
+      "email": "support@clavata.ai"
+    }
+  },
+  "tags": [
+    {
+      "name": "Public API",
+      "description": "Endpoints for creating and managing jobs via the Clavata Public API."
+    }
+  ],
+  "paths": {
+    "/v1/batch-jobs": {
+      "get": {
+        "summary": "Get batch jobs",
+        "description": "Retrieves batch jobs, optionally filtered by batch job IDs or states. If no filters are provided, all batch jobs will be returned.",
+        "operationId": "GatewayService_GetBatchJobs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetBatchJobsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "batchJobIds",
+            "description": "IDs of the batch jobs to get. If not provided, all batch jobs will be returned.",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "states",
+            "description": "The state of the batch jobs to get. If not provided, all batch jobs will be returned.",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "BATCH_JOB_STATE_UNSPECIFIED",
+                  "BATCH_JOB_STATE_ERROR",
+                  "BATCH_JOB_STATE_INITIALIZED",
+                  "BATCH_JOB_STATE_QUEUED",
+                  "BATCH_JOB_STATE_PREPROCESSING",
+                  "BATCH_JOB_STATE_PREPROCESSED",
+                  "BATCH_JOB_STATE_SUBMITTED",
+                  "BATCH_JOB_STATE_POSTPROCESSING",
+                  "BATCH_JOB_STATE_POSTPROCESSED",
+                  "BATCH_JOB_STATE_COMPLETED",
+                  "BATCH_JOB_STATE_CANCELLED"
+                ]
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Batch Processing"
+        ]
+      },
+      "post": {
+        "summary": "Create a new batch job",
+        "description": "Creates a new batch job that can process multiple content items in bulk. Returns a presigned URL for uploading the input file. The job will automatically start processing once the input file is uploaded.",
+        "operationId": "GatewayService_CreateBatchJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CreateBatchJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CreateBatchJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Batch Processing"
+        ]
+      }
+    },
+    "/v1/batch-jobs/{batchJobId}/cancel": {
+      "post": {
+        "summary": "Cancel a batch job",
+        "description": "Cancels a batch job. This will stop the batch job from being processed further.",
+        "operationId": "GatewayService_CancelBatchJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CancelBatchJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "batchJobId",
+            "description": "The ID of the batch job to cancel",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GatewayServiceCancelBatchJobBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Batch Processing"
+        ]
+      }
+    },
+    "/v1/jobs": {
+      "get": {
+        "summary": "List jobs",
+        "description": "Retrieves a list of jobs with optional filtering by time ranges and status. Incomplete jobs will only include basic information.",
+        "operationId": "GatewayService_ListJobs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1ListJobsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "query.createdTimeRange.start",
+            "description": "The start of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.createdTimeRange.end",
+            "description": "The end of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.createdTimeRange.inclusive",
+            "description": "Whether to treat the time range as inclusive or exclusive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "query.updatedTimeRange.start",
+            "description": "The start of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.updatedTimeRange.end",
+            "description": "The end of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.updatedTimeRange.inclusive",
+            "description": "Whether to treat the time range as inclusive or exclusive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "query.completedTimeRange.start",
+            "description": "The start of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.completedTimeRange.end",
+            "description": "The end of the time range",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "query.completedTimeRange.inclusive",
+            "description": "Whether to treat the time range as inclusive or exclusive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "query.status",
+            "description": "The status of the job",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "JOB_STATUS_UNSPECIFIED",
+                "JOB_STATUS_PENDING",
+                "JOB_STATUS_RUNNING",
+                "JOB_STATUS_COMPLETED",
+                "JOB_STATUS_FAILED",
+                "JOB_STATUS_CANCELED"
+              ],
+              "default": "JOB_STATUS_UNSPECIFIED"
+            }
+          },
+          {
+            "name": "query.policyId",
+            "description": "Policy ID that created the job",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "description": "The maximum number of jobs to return. Defaults to 10, capped at 1000.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageToken",
+            "description": "A token identifying the page to return; for keyset pagination",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Get Jobs"
+        ]
+      },
+      "post": {
+        "summary": "Create a new job",
+        "description": "Creates a new job for content evaluation. Can be configured to wait for completion or return immediately with a job ID.",
+        "operationId": "GatewayService_CreateJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CreateJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CreateJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Create Jobs"
+        ]
+      }
+    },
+    "/v1/jobs/stream": {
+      "post": {
+        "summary": "Stream job results in real-time",
+        "description": "Initiates a streaming job that processes content data and returns results as they become available. Useful for real-time content evaluation.",
+        "operationId": "GatewayService_Evaluate",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/clavatagatewayv1EvaluateResponse"
+                    },
+                    "error": {
+                      "$ref": "#/components/schemas/rpcStatus"
+                    }
+                  },
+                  "title": "Stream result of clavatagatewayv1EvaluateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/clavatagatewayv1EvaluateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Create Jobs"
+        ]
+      }
+    },
+    "/v1/jobs/{jobUuid}": {
+      "get": {
+        "summary": "Get job details",
+        "description": "Retrieves details of a specific job, including evaluation results if the job is complete.",
+        "operationId": "GatewayService_GetJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GRPCErrorResponse"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Precheck Failures (Canceled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1PrecheckFailureResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jobUuid",
+            "description": "jobId is the unique identifier of the job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Get Jobs"
+        ]
+      }
+    },
+    "/v1/labels/evaluate": {
+      "post": {
+        "summary": "Evaluate labels",
+        "description": "Evaluate content against one or more published label versions. Returns one result per version, in request order. A label-first account is required to use this endpoint.",
+        "operationId": "LabelsService_EvaluateLabels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1EvaluateLabelsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1EvaluateLabelsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Labels"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer_Token": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://gateway.app.clavata.ai:8443"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "Bearer_Token": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "CreateJobRequestWebhook": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to call when the job is complete. Must be HTTPS.",
+            "title": "Webhook URL"
+          },
+          "extraHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Any additional headers to send with the webhook request. Optional. If included, all headers will be prepended with X-Webhook- to avoid collisions.",
+            "title": "Extra Headers"
+          }
+        },
+        "description": "A POST request to make when the job is complete.",
+        "title": "Webhook Details (Optional)",
+        "required": [
+          "url"
+        ]
+      },
+      "GatewayServiceCancelBatchJobBody": {
+        "type": "object"
+      },
+      "PolicyEvaluationReportAssertionEvaluationReport": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "message": {
+            "type": "string",
+            "description": "The text of the assertion."
+          },
+          "score": {
+            "type": "number",
+            "format": "double",
+            "title": "The truthiness of the assertion"
+          }
+        }
+      },
+      "PolicyEvaluationReportExceptionEvaluationReport": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "assertionEvaluationReports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport"
+            },
+            "description": "Each assertion in the exception is evaluated",
+            "title": "Per-assertion report"
+          },
+          "reviewResult": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportReviewResult"
+          }
+        },
+        "description": "Outcome of an EXCEPT WHEN or UNLESS block, if present.",
+        "title": "EXCEPT WHEN or UNLESS report"
+      },
+      "PolicyEvaluationReportReviewResult": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "description": "Report on the result of a single assertion in a policy."
+      },
+      "PolicyEvaluationReportSectionEvaluationReport": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "result": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "message": {
+            "type": "string"
+          },
+          "assertionEvaluationReports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport"
+            },
+            "description": "Each assertion in each section is evaluated",
+            "title": "Per-assertion report"
+          },
+          "exceptionEvaluationReport": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport"
+          },
+          "reviewResult": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportReviewResult"
+          }
+        },
+        "description": "Report on the evaluation of a SECTION or LABEL in a policy."
+      },
+      "PolicyEvaluationReportTokenUsage": {
+        "type": "object",
+        "properties": {
+          "inputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The number of tokens that were sent to the service in the form of content."
+          },
+          "billedTokens": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The number of tokens that Clavata billed for this evaluation."
+          },
+          "multiplier": {
+            "type": "number",
+            "format": "float",
+            "description": "The policy complexity multiplier that was used to calculate the final billed tokens."
+          }
+        },
+        "description": "Usage related to this policy evaluation."
+      },
+      "clavatagatewayv1EvaluateRequest": {
+        "type": "object",
+        "properties": {
+          "contentData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1ContentData"
+            },
+            "description": "The content data to be evaluated. Only one content type should be set per entry."
+          },
+          "policyId": {
+            "type": "string",
+            "title": "policy_keys is the list of policy names to be evaluated. If empty, all policies will be evaluated"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "description": "The threshold to use for truthyness. If not set a default value will be used."
+          },
+          "expedited": {
+            "type": "boolean",
+            "description": "If set, the job will be evaluated in expedited mode, prioritizing speed over cost."
+          },
+          "options": {
+            "$ref": "#/components/schemas/v1EvaluateRequestOptions"
+          }
+        },
+        "title": "EvaluateRequest does not contain a customer ID field because the customer will be determined by looking at the credentials",
+        "required": [
+          "contentData",
+          "policyId"
+        ]
+      },
+      "clavatagatewayv1EvaluateResponse": {
+        "type": "object",
+        "properties": {
+          "jobUuid": {
+            "type": "string",
+            "title": "Each call to Evaluate will have a unique job ID"
+          },
+          "contentHash": {
+            "type": "string",
+            "title": "The hash of the content that was evaluated"
+          },
+          "policyEvaluationReport": {
+            "$ref": "#/components/schemas/v1PolicyEvaluationReport"
+          }
+        }
+      },
+      "protobufAny": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {}
+      },
+      "rpcStatus": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protobufAny"
+            }
+          }
+        }
+      },
+      "v1BatchJob": {
+        "type": "object",
+        "properties": {
+          "batchJobId": {
+            "type": "string",
+            "title": "The ID of the batch job"
+          },
+          "name": {
+            "type": "string",
+            "title": "The name of the batch job"
+          },
+          "state": {
+            "$ref": "#/components/schemas/v1BatchJobState"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the batch job was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the batch job was updated"
+          },
+          "policyId": {
+            "type": "string",
+            "title": "The policy ID"
+          },
+          "policyVersionId": {
+            "type": "string",
+            "description": "The policy version ID used to evaluate the batch job. This is the version of the policy that was active at the time the batch job was started."
+          },
+          "outputFileUrl": {
+            "type": "string",
+            "description": "The output file URL. This is only populated when the batch job is completed."
+          }
+        },
+        "title": "The batch jobs"
+      },
+      "v1BatchJobError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "$ref": "#/components/schemas/v1BatchJobErrorCode"
+          },
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "v1BatchJobErrorCode": {
+        "type": "string",
+        "enum": [
+          "BATCH_JOB_ERROR_UNSPECIFIED",
+          "BATCH_JOB_ERROR_INVALID_INPUT_FILE",
+          "BATCH_JOB_ERROR_INVALID_POLICY",
+          "BATCH_JOB_ERROR_INVALID_POLICY_VERSION",
+          "BATCH_JOB_ERROR_INVALID_PRIORITY"
+        ],
+        "default": "BATCH_JOB_ERROR_UNSPECIFIED"
+      },
+      "v1BatchJobState": {
+        "type": "string",
+        "enum": [
+          "BATCH_JOB_STATE_UNSPECIFIED",
+          "BATCH_JOB_STATE_ERROR",
+          "BATCH_JOB_STATE_INITIALIZED",
+          "BATCH_JOB_STATE_QUEUED",
+          "BATCH_JOB_STATE_PREPROCESSING",
+          "BATCH_JOB_STATE_PREPROCESSED",
+          "BATCH_JOB_STATE_SUBMITTED",
+          "BATCH_JOB_STATE_POSTPROCESSING",
+          "BATCH_JOB_STATE_POSTPROCESSED",
+          "BATCH_JOB_STATE_COMPLETED",
+          "BATCH_JOB_STATE_CANCELLED"
+        ],
+        "default": "BATCH_JOB_STATE_UNSPECIFIED"
+      },
+      "v1CancelBatchJobResponse": {
+        "type": "object",
+        "properties": {
+          "batchJobId": {
+            "type": "string",
+            "title": "The ID of the batch job that was canceled"
+          },
+          "state": {
+            "$ref": "#/components/schemas/v1BatchJobState"
+          },
+          "error": {
+            "$ref": "#/components/schemas/v1BatchJobError"
+          }
+        }
+      },
+      "v1ContentData": {
+        "type": "object",
+        "properties": {
+          "contentHash": {
+            "type": "string",
+            "description": "The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'md5::hash')",
+            "title": "Clavata calculated hash of the content.",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "description": "A text string to process.",
+            "title": "Input text",
+            "writeOnly": true
+          },
+          "image": {
+            "type": "string",
+            "format": "base64",
+            "description": "A binary image file to process.",
+            "title": "Input image",
+            "writeOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "A publicly-accessible URL that points to an image.",
+            "title": "Input image URL",
+            "writeOnly": true
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Optional metadata attached to content when sent to the server"
+          }
+        },
+        "description": "A single piece of content to be processed by the Clavata.ai API.",
+        "title": "Content Data"
+      },
+      "v1CreateBatchJobRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "The name for the batch job"
+          },
+          "policyId": {
+            "type": "string",
+            "title": "The policy to be used for the batch job"
+          },
+          "webhookUrl": {
+            "type": "string",
+            "description": "The webhook URL to call when the batch job is complete. Optional."
+          }
+        }
+      },
+      "v1CreateBatchJobResponse": {
+        "type": "object",
+        "properties": {
+          "batchJobId": {
+            "type": "string",
+            "title": "The ID of the batch job that was created"
+          },
+          "name": {
+            "type": "string",
+            "title": "The name of the batch job"
+          },
+          "error": {
+            "$ref": "#/components/schemas/v1BatchJobError"
+          },
+          "inputFileUploadUrl": {
+            "type": "string",
+            "title": "presigned URL at which the input file should be uploaded"
+          }
+        }
+      },
+      "v1CreateJobRequest": {
+        "type": "object",
+        "properties": {
+          "contentData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1ContentData"
+            },
+            "description": "The content data to be evaluated. Only one content type should be set per entry."
+          },
+          "policyId": {
+            "type": "string",
+            "title": "The policy keys to be evaluated"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "description": "The threshold to use for truthyness. If not set a default value will be used."
+          },
+          "expedited": {
+            "type": "boolean",
+            "description": "If set, the job will be evaluated in expedited mode, prioritizing speed over cost."
+          },
+          "webhook": {
+            "$ref": "#/components/schemas/CreateJobRequestWebhook"
+          },
+          "options": {
+            "$ref": "#/components/schemas/v1CreateJobRequestOptions"
+          }
+        },
+        "required": [
+          "contentData",
+          "policyId"
+        ]
+      },
+      "v1CreateJobRequestOptions": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of option keys to values."
+          }
+        },
+        "description": "Options for evaluation behavior."
+      },
+      "v1CreateJobResponse": {
+        "type": "object",
+        "properties": {
+          "job": {
+            "$ref": "#/components/schemas/v1Job"
+          }
+        }
+      },
+      "v1EvaluateRequestOptions": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of option keys to values."
+          }
+        },
+        "description": "Options for evaluation behavior."
+      },
+      "v1GRPCErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "A [gRPC status code](https://grpc.io/docs/guides/status-codes/)",
+            "title": "gRPC Status Code",
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "The human-readable error message",
+            "title": "Error Message",
+            "readOnly": true
+          }
+        },
+        "title": "A gRPC Status response"
+      },
+      "v1GetBatchJobsResponse": {
+        "type": "object",
+        "properties": {
+          "batchJobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1BatchJob"
+            }
+          }
+        }
+      },
+      "v1GetJobResponse": {
+        "type": "object",
+        "properties": {
+          "job": {
+            "$ref": "#/components/schemas/v1Job"
+          }
+        }
+      },
+      "v1Job": {
+        "type": "object",
+        "properties": {
+          "jobUuid": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of the job",
+            "readOnly": true
+          },
+          "customerId": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "ID of the customer that created the job",
+            "readOnly": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/v1JobStatus"
+          },
+          "contentData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1ContentData"
+            },
+            "description": "Content associated with this job. In responses, includes the content hash and any metadata provided with the original request.",
+            "title": "Content Data"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1JobResult"
+            },
+            "title": "The results of the policy evaluations",
+            "readOnly": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the job was created",
+            "readOnly": true
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the job was updated",
+            "readOnly": true
+          },
+          "completed": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the job was completed",
+            "readOnly": true
+          },
+          "policyId": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of a policy"
+          },
+          "policyVersionId": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of a policy version",
+            "readOnly": true
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "title": "The threshold that was set for this job"
+          },
+          "labelId": {
+            "type": "string",
+            "format": "uuidv4",
+            "description": "Label ID to evaluate this job for published-label evaluation flows.",
+            "title": "The ID of a label"
+          },
+          "labelVersionId": {
+            "type": "string",
+            "format": "uuidv4",
+            "description": "Label Version ID to evaluate this job for published-label evaluation flows.",
+            "title": "The ID of a label version",
+            "readOnly": true
+          },
+          "jobType": {
+            "$ref": "#/components/schemas/v1JobType"
+          }
+        },
+        "description": "A unique evaluation job that has compared a policy to one or more pieces of content",
+        "title": "Job"
+      },
+      "v1JobResult": {
+        "type": "object",
+        "properties": {
+          "jobUuid": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of the job"
+          },
+          "report": {
+            "$ref": "#/components/schemas/v1PolicyEvaluationReport"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The time the result was created"
+          }
+        },
+        "description": "A result of an evaluation job. Each piece of content that was evaluated will have one JobResult.",
+        "title": "Job Result"
+      },
+      "v1JobStatus": {
+        "type": "string",
+        "enum": [
+          "JOB_STATUS_UNSPECIFIED",
+          "JOB_STATUS_PENDING",
+          "JOB_STATUS_RUNNING",
+          "JOB_STATUS_COMPLETED",
+          "JOB_STATUS_FAILED",
+          "JOB_STATUS_CANCELED"
+        ],
+        "default": "JOB_STATUS_UNSPECIFIED",
+        "title": "The status of a job at the time of the response"
+      },
+      "v1JobType": {
+        "type": "string",
+        "enum": [
+          "JOB_TYPE_UNSPECIFIED",
+          "JOB_TYPE_STANDARD",
+          "JOB_TYPE_BATCH",
+          "JOB_TYPE_FREE",
+          "JOB_TYPE_TEST"
+        ],
+        "default": "JOB_TYPE_UNSPECIFIED",
+        "description": "JobType classifies how a job was created for billing and analytics purposes."
+      },
+      "v1ListJobsRequestQuery": {
+        "type": "object",
+        "properties": {
+          "createdTimeRange": {
+            "$ref": "#/components/schemas/v1TimeRange"
+          },
+          "updatedTimeRange": {
+            "$ref": "#/components/schemas/v1TimeRange"
+          },
+          "completedTimeRange": {
+            "$ref": "#/components/schemas/v1TimeRange"
+          },
+          "status": {
+            "$ref": "#/components/schemas/v1JobStatus"
+          },
+          "policyId": {
+            "type": "string",
+            "title": "Policy ID that created the job"
+          }
+        }
+      },
+      "v1ListJobsResponse": {
+        "type": "object",
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1Job"
+            },
+            "title": "The requested jobs"
+          },
+          "nextPageToken": {
+            "type": "string",
+            "title": "Token to retrieve the next page; empty if there are no more pages"
+          }
+        }
+      },
+      "v1Outcome": {
+        "type": "string",
+        "enum": [
+          "OUTCOME_UNSPECIFIED",
+          "OUTCOME_FALSE",
+          "OUTCOME_TRUE",
+          "OUTCOME_FAILED"
+        ],
+        "default": "OUTCOME_UNSPECIFIED",
+        "description": "Evaluation outcome. TRUE, FALSE or FAILED."
+      },
+      "v1PolicyEvaluationReport": {
+        "type": "object",
+        "properties": {
+          "policyId": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of a policy"
+          },
+          "policyKey": {
+            "type": "string",
+            "description": "This is the title of the policy as it appears in the policy editor. Do not use this to identify a policy. Use the policy_id instead.",
+            "title": "The human-readable name of the policy."
+          },
+          "policyVersionId": {
+            "type": "string",
+            "format": "uuidv4",
+            "title": "The ID of a policy version"
+          },
+          "result": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "sectionEvaluationReports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvaluationReportSectionEvaluationReport"
+            },
+            "description": "Reports on the evaluation of each SECTION or LABEL block in the policy.",
+            "title": "SECTION or LABEL reports"
+          },
+          "exceptionEvaluationReport": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport"
+          },
+          "contentHash": {
+            "type": "string",
+            "description": "The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'fnv1a128::hash-value')",
+            "title": "Hash of the input content"
+          },
+          "contentMetadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "If metadata was attached to the content when the job was created, it will be attached to the evaluation report here."
+          },
+          "reviewResult": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportReviewResult"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "title": "The threshold that was used to evaluate the policy"
+          },
+          "labelMatches": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Labels that matched the content. The keys of the map are the label names, and the values are the scores for each label. This field provides a simple way to identify which labels matched the content without the need to dig into each section report.",
+            "title": "Label matches"
+          },
+          "tokenUsage": {
+            "$ref": "#/components/schemas/PolicyEvaluationReportTokenUsage"
+          },
+          "labelId": {
+            "type": "string",
+            "format": "uuidv4",
+            "description": "The ID of the published label evaluated for label-based evaluation flows.",
+            "title": "The ID of a label"
+          },
+          "labelVersionId": {
+            "type": "string",
+            "format": "uuidv4",
+            "description": "The ID of the published label version evaluated for label-based evaluation flows.",
+            "title": "The ID of a label version"
+          }
+        },
+        "description": "A report on the result of evaluating a policy against a piece of content/input.",
+        "title": "Policy Evaluation Report"
+      },
+      "v1PrecheckFailure": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/v1PrecheckFailureType"
+          },
+          "message": {
+            "type": "string",
+            "title": "An error message associated with the failure"
+          },
+          "details": {
+            "description": "Details provides Additional about the failure. The shape will be different for each failure\ntype."
+          },
+          "matchConfidence": {
+            "$ref": "#/components/schemas/v1PrecheckMatchConfidence"
+          }
+        }
+      },
+      "v1PrecheckFailureResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "A [gRPC status code](https://grpc.io/docs/guides/status-codes/)",
+            "title": "gRPC Status Code",
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "The human-readable error message",
+            "title": "Error Message",
+            "readOnly": true
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1PrecheckFailure"
+            },
+            "description": "An array of objects detailing why the content failed the prechecks."
+          }
+        }
+      },
+      "v1PrecheckFailureType": {
+        "type": "string",
+        "enum": [
+          "PRECHECK_FAILURE_TYPE_UNSPECIFIED",
+          "PRECHECK_FAILURE_TYPE_NCMEC",
+          "PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT",
+          "PRECHECK_FAILURE_TYPE_INVALID_IMAGE"
+        ],
+        "default": "PRECHECK_FAILURE_TYPE_UNSPECIFIED",
+        "description": " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
+      },
+      "v1PrecheckMatchConfidence": {
+        "type": "string",
+        "enum": [
+          "PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED",
+          "PRECHECK_MATCH_CONFIDENCE_EXACT",
+          "PRECHECK_MATCH_CONFIDENCE_HIGH",
+          "PRECHECK_MATCH_CONFIDENCE_MEDIUM",
+          "PRECHECK_MATCH_CONFIDENCE_LOW"
+        ],
+        "default": "PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED",
+        "description": " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
+      },
+      "v1TimeRange": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The start of the time range"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The end of the time range"
+          },
+          "inclusive": {
+            "type": "boolean",
+            "title": "Whether to treat the time range as inclusive or exclusive"
+          }
+        },
+        "description": "A range of time. Used to filter results based on a start and end time.",
+        "title": "Time Range"
+      },
+      "LabelResultEvaluation": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/v1Outcome"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "description": "Effective threshold used for this evaluation. When the request sets threshold to 0.0 or leaves it unset,\nthe server substitutes `evaluation.default_threshold` (currently 0.5) per `chooseThreshold`."
+          },
+          "report": {
+            "$ref": "#/components/schemas/v1PolicyEvaluationReport"
+          }
+        }
+      },
+      "v1EvaluateLabelsRequest": {
+        "type": "object",
+        "properties": {
+          "contentData": {
+            "$ref": "#/components/schemas/v1ContentData"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "description": "The threshold to use for truthiness. If not set a default value will be used."
+          },
+          "labelVersionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of the published label versions to evaluate against. Maximum 10 per request.",
+            "title": "Label version IDs"
+          },
+          "labelEvalOptions": {
+            "$ref": "#/components/schemas/v1LabelEvalOptions"
+          },
+          "globalContext": {
+            "type": "string",
+            "description": "Optional global context override for this evaluation call."
+          }
+        },
+        "required": [
+          "contentData"
+        ]
+      },
+      "v1EvaluateLabelsResponse": {
+        "type": "object",
+        "properties": {
+          "contentHash": {
+            "type": "string",
+            "description": "The hash of the content that was evaluated."
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/v1EvaluateLabelsResponseLabelResult"
+            },
+            "description": "Ordered results, one per requested `label_version_ids` entry."
+          }
+        }
+      },
+      "v1EvaluateLabelsResponseLabelResult": {
+        "type": "object",
+        "properties": {
+          "labelId": {
+            "type": "string",
+            "description": "The label this result corresponds to."
+          },
+          "labelVersionId": {
+            "type": "string",
+            "description": "The label version that was evaluated."
+          },
+          "jobUuid": {
+            "type": "string",
+            "description": "The job ID for this label version's evaluation."
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/LabelResultEvaluation"
+          },
+          "error": {
+            "type": "string",
+            "description": "Populated when this individual evaluation failed (RPC may still succeed)."
+          }
+        },
+        "description": "Per-label result, one per requested `label_version_ids` entry (same order).\nEach label version gets its own job for clean recordkeeping."
+      },
+      "v1LabelEvalOptions": {
+        "type": "object",
+        "properties": {
+          "bypassCache": {
+            "type": "boolean",
+            "title": "Whether to bypass the query cache during evaluation"
+          },
+          "expedited": {
+            "type": "boolean",
+            "title": "Whether to use expedited evaluation (prioritizing speed over cost)"
+          },
+          "bundleSize": {
+            "type": "integer",
+            "format": "int64",
+            "title": "The bundle size to use for query batching in Hermes"
+          },
+          "threshold": {
+            "type": "number",
+            "format": "double",
+            "title": "The threshold to use for determining truthiness"
+          },
+          "stack": {
+            "type": "string",
+            "title": "The stack name to use for evaluation (overrides default stack in Hermes)"
+          }
+        },
+        "description": "LabelEvalOptions are options that can be set per-label to control evaluation behavior.\nField numbers/types intentionally mirror PolicyEvalOptions for parity."
+      }
+    }
+  }
+}

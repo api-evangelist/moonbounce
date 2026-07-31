@@ -1,27 +1,170 @@
 aid: moonbounce
 name: Moonbounce
-description: 'Moonbounce is a company surfaced as a portfolio company of amplify-partners and added to
-  the API Evangelist network as a stub for enrichment. Sector: ai-ml. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  Moonbounce (formerly Clavata) is a realtime AI control and content-moderation platform.
+  Its policy-first engine uses a concise, structured policy syntax to evaluate text and image
+  content in real time and enforce an organization's safety policies at scale. The Clavata
+  Public API v1 exposes content-evaluation jobs, bulk batch processing (CSV via presigned URL),
+  real-time streaming evaluation, completion webhooks, and label evaluation, backed by Python,
+  JavaScript/TypeScript, and Go SDKs and bearer-token API keys. Founded by ex-Meta Integrity and
+  ex-Apple AI-infrastructure leaders and backed by Amplify Partners.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://framerusercontent.com/assets/qhocdI2pyd7eqIyEeG1ZxNPvsgw.png
 url: https://raw.githubusercontent.com/api-evangelist/moonbounce/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - amplify-partners
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-from-public-api
+x-formerly: Clavata
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
 - Ai Ml
-apis: []
+- Content Moderation
+- Trust And Safety
+- AI Governance
+- Policy Enforcement
+- Content Evaluation
+apis:
+- aid: moonbounce:moonbounce-batch-processing-api
+  name: Moonbounce Batch Processing API
+  description: The Batch Processing API from Moonbounce — 2 operation(s) for batch processing.
+  humanURL: https://docs.clavata.ai
+  baseURL: https://gateway.app.clavata.ai:8443
+  tags:
+  - Batch Processing
+  properties:
+  - type: OpenAPI
+    url: openapi/moonbounce-batch-processing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clavata.ai
+  - type: APIReference
+    url: https://docs.clavata.ai/api-reference
+- aid: moonbounce:moonbounce-create-jobs-api
+  name: Moonbounce Create Jobs API
+  description: The Create Jobs API from Moonbounce — 2 operation(s) for create jobs.
+  humanURL: https://docs.clavata.ai
+  baseURL: https://gateway.app.clavata.ai:8443
+  tags:
+  - Create Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/moonbounce-create-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clavata.ai
+  - type: APIReference
+    url: https://docs.clavata.ai/api-reference
+- aid: moonbounce:moonbounce-get-jobs-api
+  name: Moonbounce Get Jobs API
+  description: The Get Jobs API from Moonbounce — 2 operation(s) for get jobs.
+  humanURL: https://docs.clavata.ai
+  baseURL: https://gateway.app.clavata.ai:8443
+  tags:
+  - Get Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/moonbounce-get-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clavata.ai
+  - type: APIReference
+    url: https://docs.clavata.ai/api-reference
+- aid: moonbounce:moonbounce-labels-api
+  name: Moonbounce Labels API
+  description: The Labels API from Moonbounce — 1 operation(s) for labels.
+  humanURL: https://docs.clavata.ai
+  baseURL: https://gateway.app.clavata.ai:8443
+  tags:
+  - Labels
+  properties:
+  - type: OpenAPI
+    url: openapi/moonbounce-labels-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clavata.ai
+  - type: APIReference
+    url: https://docs.clavata.ai/api-reference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: OpenAPI
+  url: openapi/moonbounce-openapi-original.json
+- type: Overlay
+  url: overlays/moonbounce-openapi-overlay.yaml
+- type: Authentication
+  url: authentication/moonbounce-authentication.yml
+- type: AgenticAccess
+  url: agentic-access/moonbounce-agentic-access.yml
+- type: DomainSecurity
+  url: security/moonbounce-domain-security.yml
+- type: Packages
+  url: packages/moonbounce-packages.yml
+- type: SDKs
+  url: packages/moonbounce-packages.yml
+- type: MCPServer
+  url: mcp/moonbounce-mcp.yml
+- type: LLMsTxt
+  url: llms/moonbounce-llms.txt
+- type: ErrorCatalog
+  url: errors/moonbounce-problem-types.yml
+- type: Conventions
+  url: conventions/moonbounce-conventions.yml
+- type: DataModel
+  url: data-model/moonbounce-data-model.yml
+- type: Conformance
+  url: conformance/moonbounce-conformance.yml
+- type: Lifecycle
+  url: lifecycle/moonbounce-lifecycle.yml
+- type: ChangeLog
+  url: changelog/moonbounce-changelog.yml
+- type: Webhooks
+  url: asyncapi/moonbounce-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Documentation
+  url: https://docs.clavata.ai
+- type: APIReference
+  url: https://docs.clavata.ai/api-reference
+- type: GettingStarted
+  url: https://docs.clavata.ai/getting_started/getting_started_guide
+- type: Playground
+  url: https://play.moonbounce.io
+- type: Blog
+  url: https://moonbounce.io/blog
+- type: Pricing
+  url: https://moonbounce.io/pricing
+- type: SignUp
+  url: https://web.app.clavata.ai/
+- type: Support
+  url: mailto:support@moonbounce.io
+- type: TermsOfService
+  url: https://moonbounce.io/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://moonbounce.io/legal/privacy-policy
+- type: GitHubOrganization
+  url: https://github.com/clavataai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/moonbounceio
 - type: Website
   url: https://moonbounce.io
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1

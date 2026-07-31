@@ -1,0 +1,16 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/moonbounce-openapi-original.json
+skills:
+  - file: moonbounce-evaluate-content.md
+    name: Evaluate content against a policy
+    api: openapi/moonbounce-openapi-original.json
+    operations: [GatewayService_CreateJob, GatewayService_GetJob, GatewayService_Evaluate]
+  - file: moonbounce-batch-processing.md
+    name: Run a batch content-moderation job
+    api: openapi/moonbounce-openapi-original.json
+    operations: [GatewayService_CreateBatchJob, GatewayService_GetBatchJobs, GatewayService_CancelBatchJob]
+  - file: moonbounce-evaluate-labels.md
+    name: Evaluate content against published labels
+    api: openapi/moonbounce-openapi-original.json
+    operations: [LabelsService_EvaluateLabels]

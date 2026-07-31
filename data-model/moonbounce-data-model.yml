@@ -1,0 +1,72 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/moonbounce-openapi-original.json
+# Entity-relationship graph derived from the Clavata Public API v1 OpenAPI schemas
+# ($ref links + id-reference fields). Policy and Label are first-class domain objects
+# referenced by id (policyId / labelVersionIds) but authored in the app, not created
+# through this public API.
+entities:
+  - name: Job
+    schema: v1Job
+    description: A content-evaluation job run against a policy.
+    id_field: jobUuid
+    fields: [status, type, results, policyId]
+  - name: JobResult
+    schema: v1JobResult
+    description: Per-content-item result within a job, carrying the outcome and policy evaluation report.
+    fields: [outcome, report]
+  - name: BatchJob
+    schema: v1BatchJob
+    description: A bulk evaluation job that ingests a CSV via presigned URL and emits results via presigned output URL.
+    id_field: batchJobId
+    fields: [state, error, policyId]
+  - name: PolicyEvaluationReport
+    schema: v1PolicyEvaluationReport
+    description: Structured report of how content scored against a policy's sections, rules, and exceptions.
+    fields: [sections, exceptions, reviewResult, tokenUsage]
+  - name: Policy
+    schema: null
+    external: true
+    description: Content-moderation policy authored in the Moonbounce app; referenced by policyId.
+    id_field: policyId
+  - name: Label
+    schema: null
+    external: true
+    description: Published label version (label-first experience) referenced when evaluating content.
+    id_field: labelVersionId
+  - name: ContentData
+    schema: v1ContentData
+    description: The text/image content submitted for evaluation.
+relationships:
+  - from: Job
+    to: Policy
+    type: belongs_to
+    via: policyId
+  - from: Job
+    to: JobResult
+    type: has_many
+    via: results
+  - from: JobResult
+    to: PolicyEvaluationReport
+    type: has_one
+    via: report
+  - from: JobResult
+    to: Outcome
+    type: has_one
+    via: outcome
+  - from: BatchJob
+    to: Policy
+    type: belongs_to
+    via: policyId
+  - from: EvaluateLabels
+    to: Label
+    type: has_many
+    via: labelVersionIds
+  - from: Job
+    to: ContentData
+    type: has_many
+    via: contentData
+enums:
+  JobStatus: [JOB_STATUS_UNSPECIFIED, JOB_STATUS_PENDING, JOB_STATUS_RUNNING, JOB_STATUS_COMPLETED, JOB_STATUS_FAILED, JOB_STATUS_CANCELED]
+  JobType: [JOB_TYPE_UNSPECIFIED, JOB_TYPE_STANDARD, JOB_TYPE_BATCH, JOB_TYPE_FREE, JOB_TYPE_TEST]
+  Outcome: [OUTCOME_UNSPECIFIED, OUTCOME_FALSE, OUTCOME_TRUE, OUTCOME_FAILED]

@@ -1,0 +1,20 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/moonbounce-openapi-original.json
+spec_type: Webhooks
+# Moonbounce (Clavata Public API v1) does not publish an AsyncAPI document, but the
+# CreateJob request accepts an optional webhook the platform calls on job completion.
+# Captured here as a webhook catalog (no AsyncAPI fabricated).
+webhooks:
+  - name: job-completion
+    trigger: A content-evaluation job created via POST /v1/jobs reaches a terminal state.
+    delivery:
+      configured_by: CreateJobRequestWebhook object on the create-job request body
+      fields:
+        url: Destination URL Moonbounce POSTs the job result to.
+        extraHeaders: Optional map of extra headers to include on the callback request.
+    payload: Job result (v1JobResult / v1GetJobResponse shape) with outcome and policy evaluation report.
+    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CreateJob
+notes: >-
+  Real-time results are also available synchronously via the streaming endpoint
+  POST /v1/jobs/stream (GatewayService_Evaluate) and by polling GET /v1/jobs/{jobUuid}.

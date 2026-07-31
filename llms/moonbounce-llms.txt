@@ -1,0 +1,58 @@
+# Moonbounce Docs
+
+> Documentation for Moonbounce content moderation platform and APIs
+
+## Docs
+
+- [Cancel a batch job](https://docs.clavata.ai/api-reference/batch-processing/cancel-a-batch-job.md): Cancels a batch job. This will stop the batch job from being processed further.
+- [Create a new batch job](https://docs.clavata.ai/api-reference/batch-processing/create-a-new-batch-job.md): Creates a new batch job that can process multiple content items in bulk. Returns a presigned URL for uploading the input file. The job will automatically start processing once the input file is uploaded.
+- [Get batch jobs](https://docs.clavata.ai/api-reference/batch-processing/get-batch-jobs.md): Retrieves batch jobs, optionally filtered by batch job IDs or states. If no filters are provided, all batch jobs will be returned.
+- [Create a new job](https://docs.clavata.ai/api-reference/create-jobs/create-a-new-job.md): Creates a new job for content evaluation. Can be configured to wait for completion or return immediately with a job ID.
+- [Stream job results in real-time](https://docs.clavata.ai/api-reference/create-jobs/stream-job-results-in-real-time.md): Initiates a streaming job that processes content data and returns results as they become available. Useful for real-time content evaluation.
+- [Get job details](https://docs.clavata.ai/api-reference/get-jobs/get-job-details.md): Retrieves details of a specific job, including evaluation results if the job is complete.
+- [List jobs](https://docs.clavata.ai/api-reference/get-jobs/list-jobs.md): Retrieves a list of jobs with optional filtering by time ranges and status. Incomplete jobs will only include basic information.
+- [Evaluate labels](https://docs.clavata.ai/api-reference/labels/evaluate-labels.md): Evaluate content against one or more published label versions. Returns one result per version, in request order. A label-first account is required to use this endpoint.
+- [April 23, 2026](https://docs.clavata.ai/changelog/2026-04-21.md): LUNA label assistant, account switching, label insights, and more.
+- [June 2, 2026](https://docs.clavata.ai/changelog/2026-06-02.md): Free plans, self-serve signup, and a brand-new label-first experience.
+- [June 10, 2026](https://docs.clavata.ai/changelog/2026-06-10.md): API key expiration alerts and label experience improvements.
+- [July 8, 2026](https://docs.clavata.ai/changelog/2026-07-08.md): Image support in LUNA, cost transparency on Usage, and faster dataset review.
+- [Customer Feedback](https://docs.clavata.ai/feedback/customer_feedback.md): Overview of how to submit customer feedback in the app.
+- [Getting Started](https://docs.clavata.ai/getting_started/getting_started_guide.md): Brief guide to getting started with Moonbounce.
+- [Analytics Overview](https://docs.clavata.ai/getting_started/overview/analytics_overview.md): Brief overview of the Analytics page.
+- [Dataset Overview](https://docs.clavata.ai/getting_started/overview/datasets_page_overview.md): Brief overview of the Dataset page.
+- [Feed](https://docs.clavata.ai/getting_started/overview/feed.md): How to use the Feed page to view your content.
+- [Dashboard](https://docs.clavata.ai/getting_started/overview/navigating_the_dashboard.md): Overview of the main homepage of Moonbounce.
+- [Insights](https://docs.clavata.ai/getting_started/overview/policies/insights.md): View quick metrics associated to your policy and its versions.
+- [Label Library](https://docs.clavata.ai/getting_started/overview/policies/label_library.md): An overview of how to use the Label Library.
+- [Policy Editor](https://docs.clavata.ai/getting_started/overview/policies/policy_editor.md): Brief overview of the policy editor.
+- [Policy Management](https://docs.clavata.ai/getting_started/overview/policies/policy_management_page.md): Brief overview of the policy management page.
+- [Plans & Pricing](https://docs.clavata.ai/getting_started/plans_and_pricing.md): Overview of Moonbounce plans and how to upgrade
+- [What can Moonbounce do for you?](https://docs.clavata.ai/getting_started/what_can_moonbounce_do_for_you.md): Overview of the key areas and features Moonbounce might be able to help you with.
+- [What is Moonbounce?](https://docs.clavata.ai/getting_started/what_is_moonbounce.md): Overview of Moonbounce and its key features
+- [Rule Filtering](https://docs.clavata.ai/guides/assertion_filtering.md): A guide to using Rule Filtering to isolate and analyze the impact of individual policy rules on your test data.
+- [Automated Policy Creation](https://docs.clavata.ai/guides/automated_policy_creation.md): Learn how to automatically generate a policy from your labeled datasets.
+- [Handling Sensitive Content: CSAM](https://docs.clavata.ai/guides/handling_sensitive_content_csam.md): How Moonbounce detects CSAM through NCMEC hash matching and PhotoDNA perceptual matching, and how to use the matchConfidence field on precheck failures.
+- [Components of a policy](https://docs.clavata.ai/guides/policy_authoring/components_of_a_policy.md): An overview of what makes up a policy in Moonbounce.
+- [Introduction to Policies](https://docs.clavata.ai/guides/policy_authoring/introduction_to_policies.md): An overview of what policies are and how to approach writing them in Moonbounce.
+- [Label Copilot](https://docs.clavata.ai/guides/policy_authoring/label_copilot.md): Generate and refine label syntax through a guided, AI-powered workflow.
+- [Comparing Policies](https://docs.clavata.ai/guides/policy_authoring/policy_comparison.md): A guide to using the Policy Compare feature to visualize differences in policy logic and performance metrics.
+- [Policy Writing 101](https://docs.clavata.ai/guides/policy_authoring/policy_writing_101.md): A 101 course on writing policies in Moonbounce which includes diving into the structures of a policy.
+- [Refining Your Policy](https://docs.clavata.ai/guides/policy_authoring/refining_policies_after_testing.md): A guide on how to refine your policy using the test results.
+- [Token multiplier](https://docs.clavata.ai/guides/policy_authoring/token_multiplier.md): Understanding the token multiplier and how it affects your usage costs
+- [Rapid Data Labelling](https://docs.clavata.ai/guides/rapid_data_labelling.md): A how-to guide on Rapid Data Labelling.
+- [Understanding Test Metrics](https://docs.clavata.ai/guides/understanding_tests.md): An overview of the metrics Moonbounce returns after you've run a test.
+- [API Documentation](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/api_documents_and_sdks.md): Overview of available integration paths
+- [API Key Management](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/api_key_management.md): Create, manage, and revoke API keys for programmatic access to Moonbounce
+- [Batch Processing](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/batch_processing.md): Learn how to process large datasets using Moonbounce's Batch Processing feature.
+- [GO SDK](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/go_sdk.md): Install and use the Moonbounce Go SDK.
+- [Javascript/Typescript SDK](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/javascript_typescript_sdk.md): Install and use the Moonbounce JavaScript/TypeScript SDK.
+- [Python SDK](https://docs.clavata.ai/integrations_and_developer_tools/api-docs-sdks/python_sdk.md): Install and use the Moonbounce Python SDK.
+- [Discord Bot](https://docs.clavata.ai/integrations_and_developer_tools/discord_bot_how-to.md)
+- [Glossary of Terms](https://docs.clavata.ai/policy_reference/moonbounce_glossary_of_terms.md): A reference glossary of terms you might encounter when working on policies.
+- [Creating Rules](https://docs.clavata.ai/policy_reference/syntax/creating_rules.md): An overview of how to create and use rules.
+- [General Policy Syntax](https://docs.clavata.ai/policy_reference/syntax/general_syntax_of_policies.md): An overview of the syntax that makes up policies.
+- [Label Prioritization](https://docs.clavata.ai/policy_reference/syntax/label_prioritization_and_taxonomies.md): An overview of how to use label prioritization.
+
+## OpenAPI Specs
+
+- [openapi](https://docs.clavata.ai/openapi.json)

@@ -1,0 +1,65 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/moonbounce-openapi-original.json
+# The Moonbounce (Clavata Public API v1) gateway is a grpc-gateway generated REST
+# surface, so error bodies use the gRPC status envelope (google.rpc.Status:
+# { code, message, details[] }) with content-type application/json — NOT RFC 9457
+# application/problem+json. Codes below are the HTTP status codes the spec declares
+# per operation, mapped to their response schema.
+format: grpc-status
+envelope:
+  content_type: application/json
+  fields:
+    code: integer      # gRPC/HTTP status code
+    message: string    # human-readable error message
+    details: array     # optional array of protobufAny detail objects
+problems:
+  - status: 400
+    schema: rpcStatus
+    title: Bad Request
+    description: Invalid request parameters or malformed body.
+    applies_to:
+      - GatewayService_GetBatchJobs
+      - GatewayService_CreateBatchJob
+      - GatewayService_CancelBatchJob
+      - GatewayService_ListJobs
+      - GatewayService_CreateJob
+      - GatewayService_Evaluate
+      - GatewayService_GetJob
+  - status: 429
+    schema: v1GRPCErrorResponse
+    title: Too Many Requests
+    description: Rate limit exceeded for the account / API key (e.g. exceeding the daily evaluation quota on the free plan).
+    applies_to:
+      - GatewayService_GetBatchJobs
+      - GatewayService_CreateBatchJob
+      - GatewayService_CancelBatchJob
+      - GatewayService_ListJobs
+      - GatewayService_CreateJob
+      - GatewayService_Evaluate
+      - GatewayService_GetJob
+  - status: 499
+    schema: v1PrecheckFailureResponse
+    title: Precheck Failure (Client Closed Request)
+    description: Content failed a mandatory precheck before evaluation. Precheck failure types include NCMEC (CSAM) hash match, unsupported image format, and invalid image. Carries a matchConfidence field on CSAM prechecks.
+    precheck_failure_types:
+      - PRECHECK_FAILURE_TYPE_NCMEC
+      - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT
+      - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
+    applies_to:
+      - GatewayService_CreateJob
+      - GatewayService_Evaluate
+  - status: default
+    schema: rpcStatus
+    title: Unexpected Error
+    description: Any error not matched by a more specific status; carries the gRPC status envelope.
+# Domain-level batch job error codes (v1BatchJobError.code enum) returned inside batch job records:
+batch_job_error_codes:
+  - code: BATCH_JOB_ERROR_INVALID_INPUT_FILE
+    meaning: The uploaded CSV input file was missing or malformed.
+  - code: BATCH_JOB_ERROR_INVALID_POLICY
+    meaning: The referenced policy could not be found or is not usable.
+  - code: BATCH_JOB_ERROR_INVALID_POLICY_VERSION
+    meaning: The referenced policy version is invalid.
+  - code: BATCH_JOB_ERROR_INVALID_PRIORITY
+    meaning: The requested batch priority is not valid.

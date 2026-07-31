@@ -1,0 +1,27 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/moonbounce-openapi-original.json
+# Cross-cutting standards conformance derived from the OpenAPI + docs. No published
+# compliance certifications (SOC 2 / ISO 27001 / etc.) were found, so no `Compliance`
+# pointer is emitted.
+standards:
+  - id: openapi-3.0
+    conforms: true
+    evidence: Provider publishes an OpenAPI 3.0.0 document at docs.clavata.ai/openapi.json
+  - id: oauth2
+    conforms: false
+    evidence: Auth is HTTP bearer API keys (bearerFormat JWT), not an OAuth2 flow.
+  - id: oidc
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use the gRPC status envelope (google.rpc.Status) as application/json, not application/problem+json.
+  - id: grpc-gateway
+    conforms: true
+    evidence: Operations are GatewayService_* / LabelsService_* with rpcStatus errors; the REST surface is grpc-gateway generated.
+  - id: cursor-pagination
+    conforms: true
+    evidence: List endpoints use pageSize/pageToken (Google AIP-style) cursor pagination.
+  - id: webhooks
+    conforms: true
+    evidence: CreateJob supports an optional completion webhook (url + extraHeaders).

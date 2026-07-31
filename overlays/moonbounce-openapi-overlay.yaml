@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Moonbounce (Clavata Public API v1)
+  version: 1.0.0
+extends: openapi/moonbounce-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: moonbounce
+      x-apievangelist-formerly: Clavata
+      x-apievangelist-category: ai-content-moderation
+      x-apievangelist-auth: bearer-token
+      x-apievangelist-error-format: grpc-status
+      x-apievangelist-webhooks: true
+      x-apievangelist-pagination: cursor
+      x-apievangelist-docs: https://docs.clavata.ai
+  - target: $.info
+    update:
+      x-apievangelist-artifacts:
+        authentication: authentication/moonbounce-authentication.yml
+        conventions: conventions/moonbounce-conventions.yml
+        errors: errors/moonbounce-problem-types.yml
+        data_model: data-model/moonbounce-data-model.yml
+        webhooks: asyncapi/moonbounce-webhooks.yml
+        packages: packages/moonbounce-packages.yml

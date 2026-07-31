@@ -1,0 +1,13 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/moonbounce-openapi-original.json
+summary:
+  types:
+  - http
+schemes:
+- name: Bearer_Token
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/moonbounce-openapi-original.json
