@@ -104,7 +104,7 @@ maintainers:
   email: info@apis.io
 common:
 - type: OpenAPI
-  url: openapi/moonbounce-openapi-original.json
+  url: openapi/_original/moonbounce-openapi-original.json
 - type: Overlay
   url: overlays/moonbounce-openapi-overlay.yaml
 - type: Authentication
