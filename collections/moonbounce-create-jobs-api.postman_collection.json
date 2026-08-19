@@ -1,0 +1,665 @@
+{
+  "item": [
+    {
+      "id": "776a89aa-a5a7-4d5f-9476-e9e67dfb073c",
+      "name": "Create Jobs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0811a1b2-1f9b-4076-975f-524bcf6aad8c",
+          "name": "Create a new job",
+          "request": {
+            "name": "Create a new job",
+            "description": {
+              "content": "Creates a new job for content evaluation. Can be configured to wait for completion or return immediately with a job ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3b46f80b-83cf-4770-b304-85b0ba23a6fb",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"job\": {\n    \"jobUuid\": \"string\",\n    \"customerId\": \"string\",\n    \"status\": \"JOB_STATUS_UNSPECIFIED\",\n    \"contentData\": [\n      {\n        \"contentHash\": \"string\",\n        \"metadata\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        }\n      },\n      {\n        \"contentHash\": \"string\",\n        \"metadata\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        }\n      }\n    ],\n    \"results\": [\n      {\n        \"jobUuid\": \"string\",\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 3845.071034759835,\n          \"labelMatches\": {\n            \"key_0\": 8344.47897436708,\n            \"key_1\": 4490.566375637981\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        },\n        \"created\": \"1999-01-17T22:34:00.584Z\"\n      },\n      {\n        \"jobUuid\": \"string\",\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 139.26572289802763,\n          \"labelMatches\": {\n            \"key_0\": 6215.425172709474\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        },\n        \"created\": \"2016-08-01T00:51:18.401Z\"\n      }\n    ],\n    \"created\": \"1984-07-10T10:55:40.894Z\",\n    \"updated\": \"1987-01-31T03:04:26.665Z\",\n    \"completed\": \"1954-11-27T05:08:19.697Z\",\n    \"policyId\": \"string\",\n    \"policyVersionId\": \"string\",\n    \"threshold\": 8143.3812552793925,\n    \"labelId\": \"string\",\n    \"labelVersionId\": \"string\",\n    \"jobType\": \"JOB_TYPE_UNSPECIFIED\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "731c7c14-0d23-40b7-b108-f1b5656ce258",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 7929,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81322031-3a92-4d2a-9fc4-391603b44b71",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 8976,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ad5ae35-ca29-476b-a445-588f85f133e0",
+              "name": "Precheck Failures (Canceled)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Client Closed Request",
+              "code": 499,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3937,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    },\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2591cf73-4849-4108-9e6d-0c7cf4a29db5",
+              "name": "An unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"webhook\": {\n    \"url\": \"<string>\",\n    \"extraHeaders\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1150,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f66145da-86ee-4d24-9b37-f21eb6ffcdc0",
+          "name": "Stream job results in real-time",
+          "request": {
+            "name": "Stream job results in real-time",
+            "description": {
+              "content": "Initiates a streaming job that processes content data and returns results as they become available. Useful for real-time content evaluation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "jobs",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "64847470-914c-485e-a3c6-8c5de3e9edf8",
+              "name": "A successful response.(streaming responses)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"jobUuid\": \"string\",\n    \"contentHash\": \"string\",\n    \"policyEvaluationReport\": {\n      \"policyId\": \"string\",\n      \"policyKey\": \"string\",\n      \"policyVersionId\": \"string\",\n      \"result\": \"OUTCOME_UNSPECIFIED\",\n      \"sectionEvaluationReports\": [\n        {\n          \"name\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"message\": \"string\",\n          \"assertionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        {\n          \"name\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"message\": \"string\",\n          \"assertionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      ],\n      \"exceptionEvaluationReport\": {\n        \"result\": \"OUTCOME_UNSPECIFIED\",\n        \"assertionEvaluationReports\": [\n          {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"message\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"message\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"reviewResult\": {\n          \"outcome\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"score\": 9338.18310055121\n        }\n      },\n      \"contentHash\": \"string\",\n      \"contentMetadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"reviewResult\": {\n        \"outcome\": \"OUTCOME_UNSPECIFIED\",\n        \"score\": 6866.634478569791\n      },\n      \"threshold\": 1638.3583546246562,\n      \"labelMatches\": {\n        \"key_0\": 35.37837921384068\n      },\n      \"tokenUsage\": {\n        \"inputTokens\": 3488,\n        \"billedTokens\": 9591,\n        \"multiplier\": 5189.098498124349\n      },\n      \"labelId\": \"string\",\n      \"labelVersionId\": \"string\"\n    }\n  },\n  \"error\": {\n    \"code\": 3751,\n    \"message\": \"string\",\n    \"details\": [\n      {\n        \"@type\": \"string\"\n      },\n      {\n        \"@type\": \"string\",\n        \"key_0\": {}\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d1ee74e4-0651-4ed8-925b-d808510dca22",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1150,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9fafd45-1d38-4f79-be33-c1e9522b2a81",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 8976,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22424327-901e-4907-95bb-2c23340173ab",
+              "name": "Precheck Failures (Canceled)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Client Closed Request",
+              "code": 499,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 172,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    },\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "557bfde3-945a-411c-a1ef-51f1bcef60d8",
+              "name": "An unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": [\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"text\": \"<string>\",\n      \"image\": \"<base64>\",\n      \"imageUrl\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    }\n  ],\n  \"policyId\": \"<string>\",\n  \"threshold\": \"<double>\",\n  \"expedited\": \"<boolean>\",\n  \"options\": {\n    \"options\": {\n      \"key_0\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1150,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://gateway.app.clavata.ai:8443",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f2073be2-a4d4-479d-8112-67dcddf66d05",
+    "name": "Clavata Public API v1 Batch Processing Create Jobs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints for creating and managing jobs via the Clavata Public API.\n\nContact Support:\n Name: Clavata.ai\n Email: support@clavata.ai",
+      "type": "text/plain"
+    }
+  }
+}

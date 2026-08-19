@@ -2,35 +2,38 @@ generated: '2026-07-20'
 method: derived
 status: candidate
 source: openapi/moonbounce-openapi-original.json
-# No official hosted/remote Moonbounce (Clavata) MCP server was found on the docs,
-# npm (@modelcontextprotocol), or public MCP registries as of this pass. The tool list
-# below is a CANDIDATE derived one-to-one from the published OpenAPI operations.
 server:
   name: moonbounce
   transport: http
   url: null
 tools:
-  - name: get_batch_jobs
-    description: Retrieve batch jobs, optionally filtered by IDs or states.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_GetBatchJobs
-  - name: create_batch_job
-    description: Create a batch job and get a presigned URL for uploading the input CSV.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CreateBatchJob
-  - name: cancel_batch_job
-    description: Cancel a batch job so it stops processing.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CancelBatchJob
-  - name: list_jobs
-    description: List evaluation jobs with time-range and status filters (cursor paginated).
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_ListJobs
-  - name: create_job
-    description: Create a content-evaluation job against a policy; optionally wait for completion.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CreateJob
-  - name: evaluate_stream
-    description: Stream evaluation results in real time as content is processed.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_Evaluate
-  - name: get_job
-    description: Get the details and evaluation results of a specific job.
-    source_operation: openapi/moonbounce-openapi-original.json#GatewayService_GetJob
-  - name: evaluate_labels
-    description: Evaluate content against one or more published label versions.
-    source_operation: openapi/moonbounce-openapi-original.json#LabelsService_EvaluateLabels
+- name: get_batch_jobs
+  description: Retrieve batch jobs, optionally filtered by IDs or states.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_GetBatchJobs
+- name: create_batch_job
+  description: Create a batch job and get a presigned URL for uploading the input CSV.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CreateBatchJob
+- name: cancel_batch_job
+  description: Cancel a batch job so it stops processing.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CancelBatchJob
+- name: list_jobs
+  description: List evaluation jobs with time-range and status filters (cursor paginated).
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_ListJobs
+- name: create_job
+  description: Create a content-evaluation job against a policy; optionally wait for completion.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_CreateJob
+- name: evaluate_stream
+  description: Stream evaluation results in real time as content is processed.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_Evaluate
+- name: get_job
+  description: Get the details and evaluation results of a specific job.
+  source_operation: openapi/moonbounce-openapi-original.json#GatewayService_GetJob
+- name: evaluate_labels
+  description: Evaluate content against one or more published label versions.
+  source_operation: openapi/moonbounce-openapi-original.json#LabelsService_EvaluateLabels
+deployment:
+  mode: none
+  verified: derived
+  tools: 8
+  checked: '2026-08-12'
+  source: catalog MCP census

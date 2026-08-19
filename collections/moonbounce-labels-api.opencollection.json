@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clavata Public API v1 Batch Processing Labels API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Labels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Evaluate labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gateway.app.clavata.ai:8443/v1/labels/evaluate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Evaluate content against one or more published label versions. Returns one result per version, in request order. A label-first account is required to use this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

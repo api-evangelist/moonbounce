@@ -1,0 +1,197 @@
+{
+  "item": [
+    {
+      "id": "c3a8be09-dbb9-4c32-938f-020065b552a0",
+      "name": "Labels",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e3319f4a-5291-4a62-b30e-6b5247eefaff",
+          "name": "Evaluate labels",
+          "request": {
+            "name": "Evaluate labels",
+            "description": {
+              "content": "Evaluate content against one or more published label versions. Returns one result per version, in request order. A label-first account is required to use this endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "labels",
+                "evaluate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentData\": {\n    \"text\": \"<string>\",\n    \"image\": \"<base64>\",\n    \"imageUrl\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  },\n  \"threshold\": \"<double>\",\n  \"labelVersionIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"labelEvalOptions\": {\n    \"bypassCache\": \"<boolean>\",\n    \"expedited\": \"<boolean>\",\n    \"bundleSize\": \"<long>\",\n    \"threshold\": \"<double>\",\n    \"stack\": \"<string>\"\n  },\n  \"globalContext\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a0431c4e-409f-4c38-908d-79afc75c2100",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "labels",
+                    "evaluate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": {\n    \"text\": \"<string>\",\n    \"image\": \"<base64>\",\n    \"imageUrl\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"threshold\": \"<double>\",\n  \"labelVersionIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"labelEvalOptions\": {\n    \"bypassCache\": \"<boolean>\",\n    \"expedited\": \"<boolean>\",\n    \"bundleSize\": \"<long>\",\n    \"threshold\": \"<double>\",\n    \"stack\": \"<string>\"\n  },\n  \"globalContext\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contentHash\": \"string\",\n  \"results\": [\n    {\n      \"labelId\": \"string\",\n      \"labelVersionId\": \"string\",\n      \"jobUuid\": \"string\",\n      \"evaluation\": {\n        \"score\": 5866.879109188563,\n        \"outcome\": \"OUTCOME_UNSPECIFIED\",\n        \"threshold\": 8273.077708270306,\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 3926.384440398344,\n          \"labelMatches\": {\n            \"key_0\": 9863.892421387445\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        }\n      },\n      \"error\": \"string\"\n    },\n    {\n      \"labelId\": \"string\",\n      \"labelVersionId\": \"string\",\n      \"jobUuid\": \"string\",\n      \"evaluation\": {\n        \"score\": 8542.940191658596,\n        \"outcome\": \"OUTCOME_UNSPECIFIED\",\n        \"threshold\": 8737.62641402169,\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 9416.07135241392,\n          \"labelMatches\": {\n            \"key_0\": 4209.496269926667\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        }\n      },\n      \"error\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce0561ae-3d09-4278-936e-c10f19c5fc87",
+              "name": "An unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "labels",
+                    "evaluate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contentData\": {\n    \"text\": \"<string>\",\n    \"image\": \"<base64>\",\n    \"imageUrl\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    }\n  },\n  \"threshold\": \"<double>\",\n  \"labelVersionIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"labelEvalOptions\": {\n    \"bypassCache\": \"<boolean>\",\n    \"expedited\": \"<boolean>\",\n    \"bundleSize\": \"<long>\",\n    \"threshold\": \"<double>\",\n    \"stack\": \"<string>\"\n  },\n  \"globalContext\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 70,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://gateway.app.clavata.ai:8443",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "53ac69b9-e9af-4c8f-949a-2d5d7e66adc5",
+    "name": "Clavata Public API v1 Batch Processing Labels API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints for creating and managing jobs via the Clavata Public API.\n\nContact Support:\n Name: Clavata.ai\n Email: support@clavata.ai",
+      "type": "text/plain"
+    }
+  }
+}

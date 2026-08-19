@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clavata Public API v1 Batch Processing Create Jobs API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Create Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gateway.app.clavata.ai:8443/v1/jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new job for content evaluation. Can be configured to wait for completion or return immediately with a job ID."
+        },
+        {
+          "info": {
+            "name": "Stream job results in real-time",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gateway.app.clavata.ai:8443/v1/jobs/stream",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a streaming job that processes content data and returns results as they become available. Useful for real-time content evaluation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,951 @@
+{
+  "item": [
+    {
+      "id": "3c793ce9-49ed-4211-9f47-7d21e66ffe3f",
+      "name": "Get Jobs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6ea78f54-e384-4563-b33c-22e23126033f",
+          "name": "List jobs",
+          "request": {
+            "name": "List jobs",
+            "description": {
+              "content": "Retrieves a list of jobs with optional filtering by time ranges and status. Incomplete jobs will only include basic information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query.createdTimeRange.start",
+                  "value": "<dateTime>",
+                  "description": "The start of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.createdTimeRange.end",
+                  "value": "<dateTime>",
+                  "description": "The end of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.createdTimeRange.inclusive",
+                  "value": "<boolean>",
+                  "description": "Whether to treat the time range as inclusive or exclusive"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.updatedTimeRange.start",
+                  "value": "<dateTime>",
+                  "description": "The start of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.updatedTimeRange.end",
+                  "value": "<dateTime>",
+                  "description": "The end of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.updatedTimeRange.inclusive",
+                  "value": "<boolean>",
+                  "description": "Whether to treat the time range as inclusive or exclusive"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.completedTimeRange.start",
+                  "value": "<dateTime>",
+                  "description": "The start of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.completedTimeRange.end",
+                  "value": "<dateTime>",
+                  "description": "The end of the time range"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.completedTimeRange.inclusive",
+                  "value": "<boolean>",
+                  "description": "Whether to treat the time range as inclusive or exclusive"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.status",
+                  "value": "JOB_STATUS_UNSPECIFIED",
+                  "description": "The status of the job"
+                },
+                {
+                  "disabled": false,
+                  "key": "query.policyId",
+                  "value": "<string>",
+                  "description": "Policy ID that created the job"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "The maximum number of jobs to return. Defaults to 10, capped at 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageToken",
+                  "value": "<string>",
+                  "description": "A token identifying the page to return; for keyset pagination"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf0d206e-42df-4b16-ba60-23022f06350b",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query.createdTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.status",
+                      "value": "JOB_STATUS_UNSPECIFIED"
+                    },
+                    {
+                      "key": "query.policyId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"jobs\": [\n    {\n      \"jobUuid\": \"string\",\n      \"customerId\": \"string\",\n      \"status\": \"JOB_STATUS_UNSPECIFIED\",\n      \"contentData\": [\n        {\n          \"contentHash\": \"string\",\n          \"metadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          }\n        },\n        {\n          \"contentHash\": \"string\",\n          \"metadata\": {\n            \"key_0\": \"string\"\n          }\n        }\n      ],\n      \"results\": [\n        {\n          \"jobUuid\": \"string\",\n          \"report\": {\n            \"policyId\": \"string\",\n            \"policyKey\": \"string\",\n            \"policyVersionId\": \"string\",\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"sectionEvaluationReports\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"exceptionEvaluationReport\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"contentHash\": \"string\",\n            \"contentMetadata\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_3\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"threshold\": 7383.481253285185,\n            \"labelMatches\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"tokenUsage\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"labelId\": \"string\",\n            \"labelVersionId\": \"string\"\n          },\n          \"created\": \"1957-07-01T01:47:14.542Z\"\n        },\n        {\n          \"jobUuid\": \"string\",\n          \"report\": {\n            \"policyId\": \"string\",\n            \"policyKey\": \"string\",\n            \"policyVersionId\": \"string\",\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"sectionEvaluationReports\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"exceptionEvaluationReport\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"contentHash\": \"string\",\n            \"contentMetadata\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"threshold\": 8115.891660254927,\n            \"labelMatches\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"tokenUsage\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"labelId\": \"string\",\n            \"labelVersionId\": \"string\"\n          },\n          \"created\": \"2025-04-02T14:18:20.654Z\"\n        }\n      ],\n      \"created\": \"2024-02-21T13:25:33.335Z\",\n      \"updated\": \"2008-10-29T19:30:11.689Z\",\n      \"completed\": \"1958-11-21T17:14:10.324Z\",\n      \"policyId\": \"string\",\n      \"policyVersionId\": \"string\",\n      \"threshold\": 6284.655846765494,\n      \"labelId\": \"string\",\n      \"labelVersionId\": \"string\",\n      \"jobType\": \"JOB_TYPE_UNSPECIFIED\"\n    },\n    {\n      \"jobUuid\": \"string\",\n      \"customerId\": \"string\",\n      \"status\": \"JOB_STATUS_UNSPECIFIED\",\n      \"contentData\": [\n        {\n          \"contentHash\": \"string\",\n          \"metadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\",\n            \"key_3\": \"string\"\n          }\n        },\n        {\n          \"contentHash\": \"string\",\n          \"metadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          }\n        }\n      ],\n      \"results\": [\n        {\n          \"jobUuid\": \"string\",\n          \"report\": {\n            \"policyId\": \"string\",\n            \"policyKey\": \"string\",\n            \"policyVersionId\": \"string\",\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"sectionEvaluationReports\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"exceptionEvaluationReport\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"contentHash\": \"string\",\n            \"contentMetadata\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"threshold\": 710.0963822458173,\n            \"labelMatches\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"tokenUsage\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"labelId\": \"string\",\n            \"labelVersionId\": \"string\"\n          },\n          \"created\": \"1976-09-09T19:38:23.390Z\"\n        },\n        {\n          \"jobUuid\": \"string\",\n          \"report\": {\n            \"policyId\": \"string\",\n            \"policyKey\": \"string\",\n            \"policyVersionId\": \"string\",\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"sectionEvaluationReports\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"exceptionEvaluationReport\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"contentHash\": \"string\",\n            \"contentMetadata\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"threshold\": 3434.6359693753093,\n            \"labelMatches\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"tokenUsage\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"labelId\": \"string\",\n            \"labelVersionId\": \"string\"\n          },\n          \"created\": \"1978-03-24T06:33:35.612Z\"\n        }\n      ],\n      \"created\": \"1985-02-25T03:27:46.614Z\",\n      \"updated\": \"2021-04-16T00:54:45.311Z\",\n      \"completed\": \"2002-06-28T00:37:37.821Z\",\n      \"policyId\": \"string\",\n      \"policyVersionId\": \"string\",\n      \"threshold\": 8713.638055449037,\n      \"labelId\": \"string\",\n      \"labelVersionId\": \"string\",\n      \"jobType\": \"JOB_TYPE_UNSPECIFIED\"\n    }\n  ],\n  \"nextPageToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae6cd73f-be0d-4b29-878c-0cd25fbda667",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query.createdTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.status",
+                      "value": "JOB_STATUS_UNSPECIFIED"
+                    },
+                    {
+                      "key": "query.policyId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 773,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\"\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "43a44c00-a9e3-4d80-b300-443e41baaca0",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query.createdTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.status",
+                      "value": "JOB_STATUS_UNSPECIFIED"
+                    },
+                    {
+                      "key": "query.policyId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 4714,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec25f62b-d6f0-42ac-9852-a80207d68aa5",
+              "name": "Precheck Failures (Canceled)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query.createdTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.status",
+                      "value": "JOB_STATUS_UNSPECIFIED"
+                    },
+                    {
+                      "key": "query.policyId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Client Closed Request",
+              "code": 499,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1829,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    },\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ab98e33-c845-4837-a411-a63e26cd5d60",
+              "name": "An unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query.createdTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.createdTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.updatedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "query.completedTimeRange.inclusive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "query.status",
+                      "value": "JOB_STATUS_UNSPECIFIED"
+                    },
+                    {
+                      "key": "query.policyId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 754,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2488339-07fb-4c09-bff4-ba0462487289",
+          "name": "Get job details",
+          "request": {
+            "name": "Get job details",
+            "description": {
+              "content": "Retrieves details of a specific job, including evaluation results if the job is complete.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "jobs",
+                ":jobUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobUuid",
+                  "description": "(Required) jobId is the unique identifier of the job"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d2dcb976-fd01-4207-9374-e43f96b568d7",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    ":jobUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobUuid",
+                      "description": "(Required) jobId is the unique identifier of the job"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"job\": {\n    \"jobUuid\": \"string\",\n    \"customerId\": \"string\",\n    \"status\": \"JOB_STATUS_UNSPECIFIED\",\n    \"contentData\": [\n      {\n        \"contentHash\": \"string\",\n        \"metadata\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\"\n        }\n      },\n      {\n        \"contentHash\": \"string\",\n        \"metadata\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\",\n          \"key_3\": \"string\"\n        }\n      }\n    ],\n    \"results\": [\n      {\n        \"jobUuid\": \"string\",\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 4484.152573166732,\n          \"labelMatches\": {\n            \"key_0\": 5521.14491156439,\n            \"key_1\": 7100.422915497353\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        },\n        \"created\": \"2011-05-12T17:02:58.107Z\"\n      },\n      {\n        \"jobUuid\": \"string\",\n        \"report\": {\n          \"policyId\": \"string\",\n          \"policyKey\": \"string\",\n          \"policyVersionId\": \"string\",\n          \"result\": \"OUTCOME_UNSPECIFIED\",\n          \"sectionEvaluationReports\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"exceptionEvaluationReport\": {\n            \"result\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"assertionEvaluationReports\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reviewResult\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"contentHash\": \"string\",\n          \"contentMetadata\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"reviewResult\": {\n            \"outcome\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"score\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"threshold\": 682.6801843337093,\n          \"labelMatches\": {\n            \"key_0\": 2747.3382887809184\n          },\n          \"tokenUsage\": {\n            \"inputTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"billedTokens\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"multiplier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"labelId\": \"string\",\n          \"labelVersionId\": \"string\"\n        },\n        \"created\": \"1970-01-02T23:45:08.083Z\"\n      }\n    ],\n    \"created\": \"1985-01-07T03:34:43.762Z\",\n    \"updated\": \"2000-07-02T22:48:13.969Z\",\n    \"completed\": \"1966-07-28T09:54:13.805Z\",\n    \"policyId\": \"string\",\n    \"policyVersionId\": \"string\",\n    \"threshold\": 3105.2343482293463,\n    \"labelId\": \"string\",\n    \"labelVersionId\": \"string\",\n    \"jobType\": \"JOB_TYPE_UNSPECIFIED\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e6f0b62-9ac0-434c-ab9d-70c3426214d2",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    ":jobUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobUuid",
+                      "description": "(Required) jobId is the unique identifier of the job"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 754,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8435c3b3-5b0a-41be-8e3a-ce635e2fb98a",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    ":jobUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobUuid",
+                      "description": "(Required) jobId is the unique identifier of the job"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 4714,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82c9d0cd-a083-4829-bc08-cdc64f400592",
+              "name": "Precheck Failures (Canceled)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    ":jobUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobUuid",
+                      "description": "(Required) jobId is the unique identifier of the job"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Client Closed Request",
+              "code": 499,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 5882,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    },\n    {\n      \"type\": \"PRECHECK_FAILURE_TYPE_UNSPECIFIED\",\n      \"message\": \"string\",\n      \"details\": {},\n      \"matchConfidence\": \"PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a3c6111-7090-441b-a424-a6c172e8c166",
+              "name": "An unexpected error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "jobs",
+                    ":jobUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobUuid",
+                      "description": "(Required) jobId is the unique identifier of the job"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 754,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://gateway.app.clavata.ai:8443",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b7c5497c-7d42-4b41-baef-5bc18e13ba9f",
+    "name": "Clavata Public API v1 Batch Processing Get Jobs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Endpoints for creating and managing jobs via the Clavata Public API.\n\nContact Support:\n Name: Clavata.ai\n Email: support@clavata.ai",
+      "type": "text/plain"
+    }
+  }
+}

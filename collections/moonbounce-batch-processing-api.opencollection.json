@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clavata Public API v1 Batch Processing API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch Processing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get batch jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://gateway.app.clavata.ai:8443/v1/batch-jobs",
+            "params": [
+              {
+                "name": "batchJobIds",
+                "value": "",
+                "type": "query",
+                "description": "IDs of the batch jobs to get. If not provided, all batch jobs will be returned."
+              },
+              {
+                "name": "states",
+                "value": "",
+                "type": "query",
+                "description": "The state of the batch jobs to get. If not provided, all batch jobs will be returned."
+              }
+            ]
+          },
+          "docs": "Retrieves batch jobs, optionally filtered by batch job IDs or states. If no filters are provided, all batch jobs will be returned."
+        },
+        {
+          "info": {
+            "name": "Create a new batch job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gateway.app.clavata.ai:8443/v1/batch-jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new batch job that can process multiple content items in bulk. Returns a presigned URL for uploading the input file. The job will automatically start processing once the input file is uploaded."
+        },
+        {
+          "info": {
+            "name": "Cancel a batch job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gateway.app.clavata.ai:8443/v1/batch-jobs/:batchJobId/cancel",
+            "params": [
+              {
+                "name": "batchJobId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the batch job to cancel"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels a batch job. This will stop the batch job from being processed further."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

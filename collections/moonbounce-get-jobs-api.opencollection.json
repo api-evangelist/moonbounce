@@ -1,0 +1,134 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clavata Public API v1 Batch Processing Get Jobs API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Get Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://gateway.app.clavata.ai:8443/v1/jobs",
+            "params": [
+              {
+                "name": "query.createdTimeRange.start",
+                "value": "",
+                "type": "query",
+                "description": "The start of the time range"
+              },
+              {
+                "name": "query.createdTimeRange.end",
+                "value": "",
+                "type": "query",
+                "description": "The end of the time range"
+              },
+              {
+                "name": "query.createdTimeRange.inclusive",
+                "value": "",
+                "type": "query",
+                "description": "Whether to treat the time range as inclusive or exclusive"
+              },
+              {
+                "name": "query.updatedTimeRange.start",
+                "value": "",
+                "type": "query",
+                "description": "The start of the time range"
+              },
+              {
+                "name": "query.updatedTimeRange.end",
+                "value": "",
+                "type": "query",
+                "description": "The end of the time range"
+              },
+              {
+                "name": "query.updatedTimeRange.inclusive",
+                "value": "",
+                "type": "query",
+                "description": "Whether to treat the time range as inclusive or exclusive"
+              },
+              {
+                "name": "query.completedTimeRange.start",
+                "value": "",
+                "type": "query",
+                "description": "The start of the time range"
+              },
+              {
+                "name": "query.completedTimeRange.end",
+                "value": "",
+                "type": "query",
+                "description": "The end of the time range"
+              },
+              {
+                "name": "query.completedTimeRange.inclusive",
+                "value": "",
+                "type": "query",
+                "description": "Whether to treat the time range as inclusive or exclusive"
+              },
+              {
+                "name": "query.status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the job"
+              },
+              {
+                "name": "query.policyId",
+                "value": "",
+                "type": "query",
+                "description": "Policy ID that created the job"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of jobs to return. Defaults to 10, capped at 1000."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "A token identifying the page to return; for keyset pagination"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of jobs with optional filtering by time ranges and status. Incomplete jobs will only include basic information."
+        },
+        {
+          "info": {
+            "name": "Get job details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://gateway.app.clavata.ai:8443/v1/jobs/:jobUuid",
+            "params": [
+              {
+                "name": "jobUuid",
+                "value": "",
+                "type": "path",
+                "description": "jobId is the unique identifier of the job"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific job, including evaluation results if the job is complete."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
