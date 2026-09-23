@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Clavata Public API v1 Batch Processing API
   description: Endpoints for creating and managing jobs via the Clavata Public API.
@@ -179,12 +179,21 @@ paths:
       - Batch Processing
 components:
   schemas:
-    protobufAny:
+    v1GRPCErrorResponse:
       type: object
       properties:
-        '@type':
+        code:
+          type: integer
+          format: int32
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
           type: string
-      additionalProperties: {}
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+      title: A gRPC Status response
     v1BatchJobError:
       type: object
       properties:
@@ -192,16 +201,67 @@ components:
           $ref: '#/components/schemas/v1BatchJobErrorCode'
         errorMessage:
           type: string
-    v1CancelBatchJobResponse:
+    v1BatchJobErrorCode:
+      type: string
+      enum:
+      - BATCH_JOB_ERROR_UNSPECIFIED
+      - BATCH_JOB_ERROR_INVALID_INPUT_FILE
+      - BATCH_JOB_ERROR_INVALID_POLICY
+      - BATCH_JOB_ERROR_INVALID_POLICY_VERSION
+      - BATCH_JOB_ERROR_INVALID_PRIORITY
+      default: BATCH_JOB_ERROR_UNSPECIFIED
+    GatewayServiceCancelBatchJobBody:
+      type: object
+    v1PrecheckFailureType:
+      type: string
+      enum:
+      - PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      - PRECHECK_FAILURE_TYPE_NCMEC
+      - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT
+      - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
+      default: PRECHECK_FAILURE_TYPE_UNSPECIFIED
+      description: " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
+    v1BatchJobState:
+      type: string
+      enum:
+      - BATCH_JOB_STATE_UNSPECIFIED
+      - BATCH_JOB_STATE_ERROR
+      - BATCH_JOB_STATE_INITIALIZED
+      - BATCH_JOB_STATE_QUEUED
+      - BATCH_JOB_STATE_PREPROCESSING
+      - BATCH_JOB_STATE_PREPROCESSED
+      - BATCH_JOB_STATE_SUBMITTED
+      - BATCH_JOB_STATE_POSTPROCESSING
+      - BATCH_JOB_STATE_POSTPROCESSED
+      - BATCH_JOB_STATE_COMPLETED
+      - BATCH_JOB_STATE_CANCELLED
+      default: BATCH_JOB_STATE_UNSPECIFIED
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+    v1CreateBatchJobResponse:
       type: object
       properties:
         batchJobId:
           type: string
-          title: The ID of the batch job that was canceled
-        state:
-          $ref: '#/components/schemas/v1BatchJobState'
+          title: The ID of the batch job that was created
+        name:
+          type: string
+          title: The name of the batch job
         error:
           $ref: '#/components/schemas/v1BatchJobError'
+        inputFileUploadUrl:
+          type: string
+          title: presigned URL at which the input file should be uploaded
     v1BatchJob:
       type: object
       properties:
@@ -231,46 +291,12 @@ components:
           type: string
           description: The output file URL. This is only populated when the batch job is completed.
       title: The batch jobs
-    v1PrecheckFailureType:
-      type: string
-      enum:
-      - PRECHECK_FAILURE_TYPE_UNSPECIFIED
-      - PRECHECK_FAILURE_TYPE_NCMEC
-      - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT
-      - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
-      default: PRECHECK_FAILURE_TYPE_UNSPECIFIED
-      description: " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
-    v1BatchJobErrorCode:
-      type: string
-      enum:
-      - BATCH_JOB_ERROR_UNSPECIFIED
-      - BATCH_JOB_ERROR_INVALID_INPUT_FILE
-      - BATCH_JOB_ERROR_INVALID_POLICY
-      - BATCH_JOB_ERROR_INVALID_POLICY_VERSION
-      - BATCH_JOB_ERROR_INVALID_PRIORITY
-      default: BATCH_JOB_ERROR_UNSPECIFIED
-    v1GRPCErrorResponse:
+    protobufAny:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
-          title: gRPC Status Code
-          readOnly: true
-        message:
+        '@type':
           type: string
-          description: The human-readable error message
-          title: Error Message
-          readOnly: true
-      title: A gRPC Status response
-    v1GetBatchJobsResponse:
-      type: object
-      properties:
-        batchJobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1BatchJob'
+      additionalProperties: {}
     v1PrecheckFailure:
       type: object
       properties:
@@ -285,20 +311,26 @@ components:
             type.'
         matchConfidence:
           $ref: '#/components/schemas/v1PrecheckMatchConfidence'
-    v1CreateBatchJobResponse:
+    v1CancelBatchJobResponse:
       type: object
       properties:
         batchJobId:
           type: string
-          title: The ID of the batch job that was created
-        name:
-          type: string
-          title: The name of the batch job
+          title: The ID of the batch job that was canceled
+        state:
+          $ref: '#/components/schemas/v1BatchJobState'
         error:
           $ref: '#/components/schemas/v1BatchJobError'
-        inputFileUploadUrl:
-          type: string
-          title: presigned URL at which the input file should be uploaded
+    v1PrecheckMatchConfidence:
+      type: string
+      enum:
+      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      - PRECHECK_MATCH_CONFIDENCE_EXACT
+      - PRECHECK_MATCH_CONFIDENCE_HIGH
+      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
+      - PRECHECK_MATCH_CONFIDENCE_LOW
+      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
     v1CreateBatchJobRequest:
       type: object
       properties:
@@ -330,45 +362,13 @@ components:
           items:
             $ref: '#/components/schemas/v1PrecheckFailure'
           description: An array of objects detailing why the content failed the prechecks.
-    v1BatchJobState:
-      type: string
-      enum:
-      - BATCH_JOB_STATE_UNSPECIFIED
-      - BATCH_JOB_STATE_ERROR
-      - BATCH_JOB_STATE_INITIALIZED
-      - BATCH_JOB_STATE_QUEUED
-      - BATCH_JOB_STATE_PREPROCESSING
-      - BATCH_JOB_STATE_PREPROCESSED
-      - BATCH_JOB_STATE_SUBMITTED
-      - BATCH_JOB_STATE_POSTPROCESSING
-      - BATCH_JOB_STATE_POSTPROCESSED
-      - BATCH_JOB_STATE_COMPLETED
-      - BATCH_JOB_STATE_CANCELLED
-      default: BATCH_JOB_STATE_UNSPECIFIED
-    v1PrecheckMatchConfidence:
-      type: string
-      enum:
-      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
-      - PRECHECK_MATCH_CONFIDENCE_EXACT
-      - PRECHECK_MATCH_CONFIDENCE_HIGH
-      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
-      - PRECHECK_MATCH_CONFIDENCE_LOW
-      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
-      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
-    GatewayServiceCancelBatchJobBody:
-      type: object
-    rpcStatus:
+    v1GetBatchJobsResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
+        batchJobs:
           type: array
           items:
-            $ref: '#/components/schemas/protobufAny'
+            $ref: '#/components/schemas/v1BatchJob'
   securitySchemes:
     Bearer_Token:
       type: http

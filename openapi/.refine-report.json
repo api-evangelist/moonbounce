@@ -1,10 +1,7 @@
 {
   "provider": "moonbounce",
   "sources": [
-    "moonbounce-batch-processing-api-openapi.yml",
-    "moonbounce-create-jobs-api-openapi.yml",
-    "moonbounce-get-jobs-api-openapi.yml",
-    "moonbounce-labels-api-openapi.yml"
+    "_original/moonbounce-openapi-original.json"
   ],
   "outputs": [
     "moonbounce-batch-processing-api-openapi.yml",
@@ -15,6 +12,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "moonbounce-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "moonbounce-openapi-original.json: declared missing tag: Batch Processing",
+    "moonbounce-openapi-original.json: declared missing tag: Create Jobs",
+    "moonbounce-openapi-original.json: declared missing tag: Get Jobs",
+    "moonbounce-openapi-original.json: declared missing tag: Labels",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "moonbounce-batch-processing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "moonbounce-create-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "moonbounce-get-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "moonbounce-labels-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
