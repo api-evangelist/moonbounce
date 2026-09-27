@@ -110,57 +110,6 @@ paths:
       - Create Jobs
 components:
   schemas:
-    PolicyEvaluationReportSectionEvaluationReport:
-      type: object
-      properties:
-        name:
-          type: string
-        result:
-          $ref: '#/components/schemas/v1Outcome'
-        message:
-          type: string
-        assertionEvaluationReports:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
-          description: Each assertion in each section is evaluated
-          title: Per-assertion report
-        exceptionEvaluationReport:
-          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
-        reviewResult:
-          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
-      description: Report on the evaluation of a SECTION or LABEL in a policy.
-    v1ContentData:
-      type: object
-      properties:
-        contentHash:
-          type: string
-          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'md5::hash')
-          title: Clavata calculated hash of the content.
-          readOnly: true
-        text:
-          type: string
-          description: A text string to process.
-          title: Input text
-          writeOnly: true
-        image:
-          type: string
-          format: base64
-          description: A binary image file to process.
-          title: Input image
-          writeOnly: true
-        imageUrl:
-          type: string
-          description: A publicly-accessible URL that points to an image.
-          title: Input image URL
-          writeOnly: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          title: Optional metadata attached to content when sent to the server
-      description: A single piece of content to be processed by the Clavata.ai API.
-      title: Content Data
     v1PolicyEvaluationReport:
       type: object
       properties:
@@ -222,29 +171,15 @@ components:
           title: The ID of a label version
       description: A report on the result of evaluating a policy against a piece of content/input.
       title: Policy Evaluation Report
-    v1Outcome:
-      type: string
-      enum:
-      - OUTCOME_UNSPECIFIED
-      - OUTCOME_FALSE
-      - OUTCOME_TRUE
-      - OUTCOME_FAILED
-      default: OUTCOME_UNSPECIFIED
-      description: Evaluation outcome. TRUE, FALSE or FAILED.
-    v1PrecheckFailure:
+    v1CreateJobRequestOptions:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/v1PrecheckFailureType'
-        message:
-          type: string
-          title: An error message associated with the failure
-        details:
-          description: 'Details provides Additional about the failure. The shape will be different for each failure
-
-            type.'
-        matchConfidence:
-          $ref: '#/components/schemas/v1PrecheckMatchConfidence'
+        options:
+          type: object
+          additionalProperties:
+            type: string
+          description: Map of option keys to values.
+      description: Options for evaluation behavior.
     v1PrecheckFailureType:
       type: string
       enum:
@@ -254,41 +189,44 @@ components:
       - PRECHECK_FAILURE_TYPE_INVALID_IMAGE
       default: PRECHECK_FAILURE_TYPE_UNSPECIFIED
       description: " - PRECHECK_FAILURE_TYPE_UNSPECIFIED: The precheck failure type is not specified\n - PRECHECK_FAILURE_TYPE_NCMEC: The content has been identified as CSAM due to its hash matching an entry in the NCMEC database.\n - PRECHECK_FAILURE_TYPE_UNSUPPORTED_IMAGE_FORMAT: The image format is not supported.\n - PRECHECK_FAILURE_TYPE_INVALID_IMAGE: The provided image is invalid or corrupted."
-    PolicyEvaluationReportReviewResult:
+    protobufAny:
       type: object
       properties:
-        outcome:
-          $ref: '#/components/schemas/v1Outcome'
-        score:
-          type: number
-          format: double
-      description: Report on the result of a single assertion in a policy.
-    v1PrecheckMatchConfidence:
-      type: string
-      enum:
-      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
-      - PRECHECK_MATCH_CONFIDENCE_EXACT
-      - PRECHECK_MATCH_CONFIDENCE_HIGH
-      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
-      - PRECHECK_MATCH_CONFIDENCE_LOW
-      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
-      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
-    PolicyEvaluationReportTokenUsage:
+        '@type':
+          type: string
+      additionalProperties: {}
+    CreateJobRequestWebhook:
       type: object
       properties:
-        inputTokens:
+        url:
+          type: string
+          description: The URL to call when the job is complete. Must be HTTPS.
+          title: Webhook URL
+        extraHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: Any additional headers to send with the webhook request. Optional. If included, all headers will be prepended with X-Webhook- to avoid collisions.
+          title: Extra Headers
+      description: A POST request to make when the job is complete.
+      title: Webhook Details (Optional)
+      required:
+      - url
+    v1GRPCErrorResponse:
+      type: object
+      properties:
+        code:
           type: integer
           format: int32
-          description: The number of tokens that were sent to the service in the form of content.
-        billedTokens:
-          type: integer
-          format: int32
-          description: The number of tokens that Clavata billed for this evaluation.
-        multiplier:
-          type: number
-          format: float
-          description: The policy complexity multiplier that was used to calculate the final billed tokens.
-      description: Usage related to this policy evaluation.
+          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
+          title: gRPC Status Code
+          readOnly: true
+        message:
+          type: string
+          description: The human-readable error message
+          title: Error Message
+          readOnly: true
+      title: A gRPC Status response
     v1PrecheckFailureResponse:
       type: object
       properties:
@@ -308,17 +246,85 @@ components:
           items:
             $ref: '#/components/schemas/v1PrecheckFailure'
           description: An array of objects detailing why the content failed the prechecks.
-    v1JobStatus:
-      type: string
-      enum:
-      - JOB_STATUS_UNSPECIFIED
-      - JOB_STATUS_PENDING
-      - JOB_STATUS_RUNNING
-      - JOB_STATUS_COMPLETED
-      - JOB_STATUS_FAILED
-      - JOB_STATUS_CANCELED
-      default: JOB_STATUS_UNSPECIFIED
-      title: The status of a job at the time of the response
+    v1JobResult:
+      type: object
+      properties:
+        jobUuid:
+          type: string
+          format: uuidv4
+          title: The ID of the job
+        report:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
+        created:
+          type: string
+          format: date-time
+          title: The time the result was created
+      description: A result of an evaluation job. Each piece of content that was evaluated will have one JobResult.
+      title: Job Result
+    v1CreateJobRequest:
+      type: object
+      properties:
+        contentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ContentData'
+          description: The content data to be evaluated. Only one content type should be set per entry.
+        policyId:
+          type: string
+          title: The policy keys to be evaluated
+        threshold:
+          type: number
+          format: double
+          description: The threshold to use for truthyness. If not set a default value will be used.
+        expedited:
+          type: boolean
+          description: If set, the job will be evaluated in expedited mode, prioritizing speed over cost.
+        webhook:
+          $ref: '#/components/schemas/CreateJobRequestWebhook'
+        options:
+          $ref: '#/components/schemas/v1CreateJobRequestOptions'
+      required:
+      - contentData
+      - policyId
+    PolicyEvaluationReportTokenUsage:
+      type: object
+      properties:
+        inputTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that were sent to the service in the form of content.
+        billedTokens:
+          type: integer
+          format: int32
+          description: The number of tokens that Clavata billed for this evaluation.
+        multiplier:
+          type: number
+          format: float
+          description: The policy complexity multiplier that was used to calculate the final billed tokens.
+      description: Usage related to this policy evaluation.
+    clavatagatewayv1EvaluateResponse:
+      type: object
+      properties:
+        jobUuid:
+          type: string
+          title: Each call to Evaluate will have a unique job ID
+        contentHash:
+          type: string
+          title: The hash of the content that was evaluated
+        policyEvaluationReport:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
+    PolicyEvaluationReportAssertionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+          description: The text of the assertion.
+        score:
+          type: number
+          format: double
+          title: The truthiness of the assertion
     clavatagatewayv1EvaluateRequest:
       type: object
       properties:
@@ -343,44 +349,26 @@ components:
       required:
       - contentData
       - policyId
-    rpcStatus:
+    PolicyEvaluationReportReviewResult:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/protobufAny'
-    CreateJobRequestWebhook:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL to call when the job is complete. Must be HTTPS.
-          title: Webhook URL
-        extraHeaders:
-          type: object
-          additionalProperties:
-            type: string
-          description: Any additional headers to send with the webhook request. Optional. If included, all headers will be prepended with X-Webhook- to avoid collisions.
-          title: Extra Headers
-      description: A POST request to make when the job is complete.
-      title: Webhook Details (Optional)
-      required:
-      - url
-    v1EvaluateRequestOptions:
-      type: object
-      properties:
-        options:
-          type: object
-          additionalProperties:
-            type: string
-          description: Map of option keys to values.
-      description: Options for evaluation behavior.
+        outcome:
+          $ref: '#/components/schemas/v1Outcome'
+        score:
+          type: number
+          format: double
+      description: Report on the result of a single assertion in a policy.
+    v1JobStatus:
+      type: string
+      enum:
+      - JOB_STATUS_UNSPECIFIED
+      - JOB_STATUS_PENDING
+      - JOB_STATUS_RUNNING
+      - JOB_STATUS_COMPLETED
+      - JOB_STATUS_FAILED
+      - JOB_STATUS_CANCELED
+      default: JOB_STATUS_UNSPECIFIED
+      title: The status of a job at the time of the response
     v1Job:
       type: object
       properties:
@@ -451,58 +439,24 @@ components:
           $ref: '#/components/schemas/v1JobType'
       description: A unique evaluation job that has compared a policy to one or more pieces of content
       title: Job
-    clavatagatewayv1EvaluateResponse:
-      type: object
-      properties:
-        jobUuid:
-          type: string
-          title: Each call to Evaluate will have a unique job ID
-        contentHash:
-          type: string
-          title: The hash of the content that was evaluated
-        policyEvaluationReport:
-          $ref: '#/components/schemas/v1PolicyEvaluationReport'
-    v1GRPCErrorResponse:
+    rpcStatus:
       type: object
       properties:
         code:
           type: integer
           format: int32
-          description: A [gRPC status code](https://grpc.io/docs/guides/status-codes/)
-          title: gRPC Status Code
-          readOnly: true
         message:
           type: string
-          description: The human-readable error message
-          title: Error Message
-          readOnly: true
-      title: A gRPC Status response
-    v1CreateJobRequest:
-      type: object
-      properties:
-        contentData:
+        details:
           type: array
           items:
-            $ref: '#/components/schemas/v1ContentData'
-          description: The content data to be evaluated. Only one content type should be set per entry.
-        policyId:
-          type: string
-          title: The policy keys to be evaluated
-        threshold:
-          type: number
-          format: double
-          description: The threshold to use for truthyness. If not set a default value will be used.
-        expedited:
-          type: boolean
-          description: If set, the job will be evaluated in expedited mode, prioritizing speed over cost.
-        webhook:
-          $ref: '#/components/schemas/CreateJobRequestWebhook'
-        options:
-          $ref: '#/components/schemas/v1CreateJobRequestOptions'
-      required:
-      - contentData
-      - policyId
-    v1CreateJobRequestOptions:
+            $ref: '#/components/schemas/protobufAny'
+    v1CreateJobResponse:
+      type: object
+      properties:
+        job:
+          $ref: '#/components/schemas/v1Job'
+    v1EvaluateRequestOptions:
       type: object
       properties:
         options:
@@ -511,11 +465,100 @@ components:
             type: string
           description: Map of option keys to values.
       description: Options for evaluation behavior.
-    v1CreateJobResponse:
+    v1ContentData:
       type: object
       properties:
-        job:
-          $ref: '#/components/schemas/v1Job'
+        contentHash:
+          type: string
+          description: The hashing algorithm used will appear at the front of the hash value in this field (i.e., 'md5::hash')
+          title: Clavata calculated hash of the content.
+          readOnly: true
+        text:
+          type: string
+          description: A text string to process.
+          title: Input text
+          writeOnly: true
+        image:
+          type: string
+          format: base64
+          description: A binary image file to process.
+          title: Input image
+          writeOnly: true
+        imageUrl:
+          type: string
+          description: A publicly-accessible URL that points to an image.
+          title: Input image URL
+          writeOnly: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          title: Optional metadata attached to content when sent to the server
+      description: A single piece of content to be processed by the Clavata.ai API.
+      title: Content Data
+    v1PrecheckFailure:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1PrecheckFailureType'
+        message:
+          type: string
+          title: An error message associated with the failure
+        details:
+          description: 'Details provides Additional about the failure. The shape will be different for each failure
+
+            type.'
+        matchConfidence:
+          $ref: '#/components/schemas/v1PrecheckMatchConfidence'
+    v1Outcome:
+      type: string
+      enum:
+      - OUTCOME_UNSPECIFIED
+      - OUTCOME_FALSE
+      - OUTCOME_TRUE
+      - OUTCOME_FAILED
+      default: OUTCOME_UNSPECIFIED
+      description: Evaluation outcome. TRUE, FALSE or FAILED.
+    v1JobType:
+      type: string
+      enum:
+      - JOB_TYPE_UNSPECIFIED
+      - JOB_TYPE_STANDARD
+      - JOB_TYPE_BATCH
+      - JOB_TYPE_FREE
+      - JOB_TYPE_TEST
+      default: JOB_TYPE_UNSPECIFIED
+      description: JobType classifies how a job was created for billing and analytics purposes.
+    v1PrecheckMatchConfidence:
+      type: string
+      enum:
+      - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      - PRECHECK_MATCH_CONFIDENCE_EXACT
+      - PRECHECK_MATCH_CONFIDENCE_HIGH
+      - PRECHECK_MATCH_CONFIDENCE_MEDIUM
+      - PRECHECK_MATCH_CONFIDENCE_LOW
+      default: PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED
+      description: " - PRECHECK_MATCH_CONFIDENCE_UNSPECIFIED: Default / legacy / non-CSAM. Not a customer-facing confidence tier.\n - PRECHECK_MATCH_CONFIDENCE_EXACT: Exact match (NCMEC direct md5/sha1 hash lookup). Highest confidence; customers may auto-enforce.\n - PRECHECK_MATCH_CONFIDENCE_HIGH: PhotoDNA perceptual match, closest distance band (near-duplicate).\n - PRECHECK_MATCH_CONFIDENCE_MEDIUM: PhotoDNA perceptual match, middle distance band (moderate similarity).\n - PRECHECK_MATCH_CONFIDENCE_LOW: PhotoDNA perceptual match, farthest distance band (loose similarity; review recommended)."
+    PolicyEvaluationReportSectionEvaluationReport:
+      type: object
+      properties:
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in each section is evaluated
+          title: Per-assertion report
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Report on the evaluation of a SECTION or LABEL in a policy.
     PolicyEvaluationReportExceptionEvaluationReport:
       type: object
       properties:
@@ -531,49 +574,6 @@ components:
           $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
       description: Outcome of an EXCEPT WHEN or UNLESS block, if present.
       title: EXCEPT WHEN or UNLESS report
-    v1JobResult:
-      type: object
-      properties:
-        jobUuid:
-          type: string
-          format: uuidv4
-          title: The ID of the job
-        report:
-          $ref: '#/components/schemas/v1PolicyEvaluationReport'
-        created:
-          type: string
-          format: date-time
-          title: The time the result was created
-      description: A result of an evaluation job. Each piece of content that was evaluated will have one JobResult.
-      title: Job Result
-    v1JobType:
-      type: string
-      enum:
-      - JOB_TYPE_UNSPECIFIED
-      - JOB_TYPE_STANDARD
-      - JOB_TYPE_BATCH
-      - JOB_TYPE_FREE
-      - JOB_TYPE_TEST
-      default: JOB_TYPE_UNSPECIFIED
-      description: JobType classifies how a job was created for billing and analytics purposes.
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
-    PolicyEvaluationReportAssertionEvaluationReport:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/v1Outcome'
-        message:
-          type: string
-          description: The text of the assertion.
-        score:
-          type: number
-          format: double
-          title: The truthiness of the assertion
   securitySchemes:
     Bearer_Token:
       type: http
