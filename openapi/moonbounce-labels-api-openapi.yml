@@ -42,6 +42,100 @@ paths:
       - Labels
 components:
   schemas:
+    v1EvaluateLabelsRequest:
+      type: object
+      properties:
+        contentData:
+          $ref: '#/components/schemas/v1ContentData'
+        threshold:
+          type: number
+          format: double
+          description: The threshold to use for truthiness. If not set a default value will be used.
+        labelVersionIds:
+          type: array
+          items:
+            type: string
+          description: IDs of the published label versions to evaluate against. Maximum 10 per request.
+          title: Label version IDs
+        labelEvalOptions:
+          $ref: '#/components/schemas/v1LabelEvalOptions'
+        globalContext:
+          type: string
+          description: Optional global context override for this evaluation call.
+      required:
+      - contentData
+    v1EvaluateLabelsResponseLabelResult:
+      type: object
+      properties:
+        labelId:
+          type: string
+          description: The label this result corresponds to.
+        labelVersionId:
+          type: string
+          description: The label version that was evaluated.
+        jobUuid:
+          type: string
+          description: The job ID for this label version's evaluation.
+        evaluation:
+          $ref: '#/components/schemas/LabelResultEvaluation'
+        error:
+          type: string
+          description: Populated when this individual evaluation failed (RPC may still succeed).
+      description: 'Per-label result, one per requested `label_version_ids` entry (same order).
+
+        Each label version gets its own job for clean recordkeeping.'
+    v1LabelEvalOptions:
+      type: object
+      properties:
+        bypassCache:
+          type: boolean
+          title: Whether to bypass the query cache during evaluation
+        expedited:
+          type: boolean
+          title: Whether to use expedited evaluation (prioritizing speed over cost)
+        bundleSize:
+          type: integer
+          format: int64
+          title: The bundle size to use for query batching in Hermes
+        threshold:
+          type: number
+          format: double
+          title: The threshold to use for determining truthiness
+        stack:
+          type: string
+          title: The stack name to use for evaluation (overrides default stack in Hermes)
+      description: 'LabelEvalOptions are options that can be set per-label to control evaluation behavior.
+
+        Field numbers/types intentionally mirror PolicyEvalOptions for parity.'
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    v1EvaluateLabelsResponse:
+      type: object
+      properties:
+        contentHash:
+          type: string
+          description: The hash of the content that was evaluated.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1EvaluateLabelsResponseLabelResult'
+          description: Ordered results, one per requested `label_version_ids` entry.
     PolicyEvaluationReportTokenUsage:
       type: object
       properties:
@@ -119,6 +213,26 @@ components:
           title: The ID of a label version
       description: A report on the result of evaluating a policy against a piece of content/input.
       title: Policy Evaluation Report
+    PolicyEvaluationReportSectionEvaluationReport:
+      type: object
+      properties:
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+        assertionEvaluationReports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
+          description: Each assertion in each section is evaluated
+          title: Per-assertion report
+        exceptionEvaluationReport:
+          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
+        reviewResult:
+          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
+      description: Report on the evaluation of a SECTION or LABEL in a policy.
     v1ContentData:
       type: object
       properties:
@@ -150,157 +264,6 @@ components:
           title: Optional metadata attached to content when sent to the server
       description: A single piece of content to be processed by the Clavata.ai API.
       title: Content Data
-    v1EvaluateLabelsResponseLabelResult:
-      type: object
-      properties:
-        labelId:
-          type: string
-          description: The label this result corresponds to.
-        labelVersionId:
-          type: string
-          description: The label version that was evaluated.
-        jobUuid:
-          type: string
-          description: The job ID for this label version's evaluation.
-        evaluation:
-          $ref: '#/components/schemas/LabelResultEvaluation'
-        error:
-          type: string
-          description: Populated when this individual evaluation failed (RPC may still succeed).
-      description: 'Per-label result, one per requested `label_version_ids` entry (same order).
-
-        Each label version gets its own job for clean recordkeeping.'
-    v1Outcome:
-      type: string
-      enum:
-      - OUTCOME_UNSPECIFIED
-      - OUTCOME_FALSE
-      - OUTCOME_TRUE
-      - OUTCOME_FAILED
-      default: OUTCOME_UNSPECIFIED
-      description: Evaluation outcome. TRUE, FALSE or FAILED.
-    v1EvaluateLabelsRequest:
-      type: object
-      properties:
-        contentData:
-          $ref: '#/components/schemas/v1ContentData'
-        threshold:
-          type: number
-          format: double
-          description: The threshold to use for truthiness. If not set a default value will be used.
-        labelVersionIds:
-          type: array
-          items:
-            type: string
-          description: IDs of the published label versions to evaluate against. Maximum 10 per request.
-          title: Label version IDs
-        labelEvalOptions:
-          $ref: '#/components/schemas/v1LabelEvalOptions'
-        globalContext:
-          type: string
-          description: Optional global context override for this evaluation call.
-      required:
-      - contentData
-    rpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/protobufAny'
-    v1EvaluateLabelsResponse:
-      type: object
-      properties:
-        contentHash:
-          type: string
-          description: The hash of the content that was evaluated.
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1EvaluateLabelsResponseLabelResult'
-          description: Ordered results, one per requested `label_version_ids` entry.
-    LabelResultEvaluation:
-      type: object
-      properties:
-        score:
-          type: number
-          format: double
-        outcome:
-          $ref: '#/components/schemas/v1Outcome'
-        threshold:
-          type: number
-          format: double
-          description: 'Effective threshold used for this evaluation. When the request sets threshold to 0.0 or leaves it unset,
-
-            the server substitutes `evaluation.default_threshold` (currently 0.5) per `chooseThreshold`.'
-        report:
-          $ref: '#/components/schemas/v1PolicyEvaluationReport'
-    PolicyEvaluationReportSectionEvaluationReport:
-      type: object
-      properties:
-        name:
-          type: string
-        result:
-          $ref: '#/components/schemas/v1Outcome'
-        message:
-          type: string
-        assertionEvaluationReports:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyEvaluationReportAssertionEvaluationReport'
-          description: Each assertion in each section is evaluated
-          title: Per-assertion report
-        exceptionEvaluationReport:
-          $ref: '#/components/schemas/PolicyEvaluationReportExceptionEvaluationReport'
-        reviewResult:
-          $ref: '#/components/schemas/PolicyEvaluationReportReviewResult'
-      description: Report on the evaluation of a SECTION or LABEL in a policy.
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
-    PolicyEvaluationReportAssertionEvaluationReport:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/v1Outcome'
-        message:
-          type: string
-          description: The text of the assertion.
-        score:
-          type: number
-          format: double
-          title: The truthiness of the assertion
-    v1LabelEvalOptions:
-      type: object
-      properties:
-        bypassCache:
-          type: boolean
-          title: Whether to bypass the query cache during evaluation
-        expedited:
-          type: boolean
-          title: Whether to use expedited evaluation (prioritizing speed over cost)
-        bundleSize:
-          type: integer
-          format: int64
-          title: The bundle size to use for query batching in Hermes
-        threshold:
-          type: number
-          format: double
-          title: The threshold to use for determining truthiness
-        stack:
-          type: string
-          title: The stack name to use for evaluation (overrides default stack in Hermes)
-      description: 'LabelEvalOptions are options that can be set per-label to control evaluation behavior.
-
-        Field numbers/types intentionally mirror PolicyEvalOptions for parity.'
     PolicyEvaluationReportExceptionEvaluationReport:
       type: object
       properties:
@@ -325,6 +288,43 @@ components:
           type: number
           format: double
       description: Report on the result of a single assertion in a policy.
+    v1Outcome:
+      type: string
+      enum:
+      - OUTCOME_UNSPECIFIED
+      - OUTCOME_FALSE
+      - OUTCOME_TRUE
+      - OUTCOME_FAILED
+      default: OUTCOME_UNSPECIFIED
+      description: Evaluation outcome. TRUE, FALSE or FAILED.
+    PolicyEvaluationReportAssertionEvaluationReport:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/v1Outcome'
+        message:
+          type: string
+          description: The text of the assertion.
+        score:
+          type: number
+          format: double
+          title: The truthiness of the assertion
+    LabelResultEvaluation:
+      type: object
+      properties:
+        score:
+          type: number
+          format: double
+        outcome:
+          $ref: '#/components/schemas/v1Outcome'
+        threshold:
+          type: number
+          format: double
+          description: 'Effective threshold used for this evaluation. When the request sets threshold to 0.0 or leaves it unset,
+
+            the server substitutes `evaluation.default_threshold` (currently 0.5) per `chooseThreshold`.'
+        report:
+          $ref: '#/components/schemas/v1PolicyEvaluationReport'
   securitySchemes:
     Bearer_Token:
       type: http
